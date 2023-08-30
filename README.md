@@ -1,52 +1,32 @@
-# hybrid-template
+# Hybrid template
 
-This template should help get you started developing with Vue 3 in Vite.
+This is a TypeScript template for building quality multiplatform apps. It uses the following technologies:
+* [Vue 3](https://v3.vuejs.org/)
+* * [Vue I18n](https:https://vue-i18n.intlify.dev/) - Internationalization (translations, date/time formatting, number formatting)
+* * [VeeValidate](https://vee-validate.logaretm.com/v4/) - Form validation
+* [Framework7](https://framework7.io/) - UI, Routing
+* [Firebase](https://firebase.google.com/) - Authentication, Database, Storage, Analytics. Firebase firestore is used as a direct (realtime) datastore (replaces pinia / vue).
+* [Capacitor](https://capacitorjs.com/) - Native API access, Build, Deploy
 
-## Recommended IDE Setup
+## Why this template?
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+The purpose of this template is to serve as a starting point for building quality multiplatform apps. It handles all the time-consuming tasks like setting up routing, authentication, database access, storage access, analytics, internationalization, form validation, app subscriptions, capacitor settings etc. This way you can focus on the actual app logic and UI.
 
-## Type Support for `.vue` Imports in TS
+## Features
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+* Multiplatform (iOS, Android, Web, PWA, Electron)
+* Internationalization (translations, date/time formatting, number formatting)
+* Form validation
+* Authentication (anonymous, email/password, Google, Facebook, Apple)
+* Firestore database 
+* Firebase Storage
+* Firebase Analytics
+* App subscriptions (Apple, Google, Stripe)
+* Push notifications
+* Offline support
+* Prebuild pages (login, signup, confirm email, forgot password, profile, settings, home, subscribe )
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+## Files and folders you work with
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+* ---- todo
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
