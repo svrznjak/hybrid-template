@@ -1,9 +1,9 @@
 {
-  "name": "Hybrid template",
+  "name": "hybrid-template",
   "version": "0.0.0",
   "private": false,
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "test:unit": "vitest",
@@ -13,6 +13,8 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "framework7": "^8.3.0",
+    "framework7-vue": "^8.3.0",
     "vue": "^3.3.4"
   },
   "devDependencies": {
