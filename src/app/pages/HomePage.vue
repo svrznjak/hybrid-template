@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import appState from '@/appState';
-import { f7Page, f7Navbar, f7Button, f7ready, f7Link, f7NavLeft, f7NavTitle } from 'framework7-vue';
+import { f7ready } from 'framework7-vue';
 import { onMounted } from 'vue';
 
 onMounted(() => {
@@ -12,15 +12,15 @@ onMounted(() => {
 console.log(appState)
 </script>
 <template>
-  <f7Page name="home">
-    <f7Navbar>
-      <f7NavLeft>
-        <f7Link icon-ios="f7:menu" icon-md="material:menu" panelOpen="left"></f7Link>
-      </f7NavLeft>
-      <f7NavTitle>Home</f7NavTitle>
-    </f7Navbar>
-    <f7Button fill>Button</f7Button>
-    <f7Link href="/asd/">About Page</f7Link>
+  <f7-page name="home">
+    <f7-navbar>
+      <f7-nav-left>
+        <f7-link icon-ios="f7:menu" icon-md="material:menu" panelOpen="left"></f7-link>
+      </f7-nav-left>
+      <f7-nav-title>Home</f7-nav-title>
+    </f7-navbar>
+    <f7-button fill>Button</f7-button>
+    <f7-link href="/asd/">About Page</f7-link>
 
-  </f7Page>
+  </f7-page>
 </template>
