@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { f7App, f7View, f7Panel, f7Page, f7Navbar, f7Block, useStore } from 'framework7-vue';
+import { useStore } from 'framework7-vue';
 import routes from '@/app/routes';
 import appState from './appState';
+import LeftPanel from './app/LeftPanel.vue';
 const sidePanelState = useStore(appState, 'getSidePanelState');
 console.log(__APP_CONFIG__);
 
@@ -15,18 +16,13 @@ console.log(sidePanelState.value)
 </script>
 
 <template>
-  <f7App v-bind="f7params">
+  <f7-app v-bind="f7params">
 
-    <f7Panel v-if="sidePanelState" left reveal dark :visible-breakpoint="1024">
-      <f7View>
-        <f7Page>
-          <f7Navbar title="Left Panel"></f7Navbar>
-          <f7Block>Left panel content goes here</f7Block>
-        </f7Page>
-      </f7View>
-    </f7Panel>
-    <f7View main url="/" />
-  </f7App>
+    <f7-panel v-if="sidePanelState" left reveal dark :visible-breakpoint="1024">
+      <LeftPanel />
+    </f7-panel>
+    <f7-view main url="/" />
+  </f7-app>
 </template>
 
 <style scoped></style>
