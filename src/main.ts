@@ -7,7 +7,7 @@ import Framework7 from 'framework7/lite-bundle'
 import Framework7Vue from 'framework7-vue/bundle'
 import 'framework7/css/bundle'
 // Import Icons and App Custom Styles
-import './framework7css/icons.css'
+import '@/framework7css/icons.css'
 Framework7.use(Framework7Vue)
 
 import '#/assets/main.css'
