@@ -1,3 +1,4 @@
+
 <script setup lang="ts">
 import appState from '@/appState';
 import { f7ready } from 'framework7-vue';

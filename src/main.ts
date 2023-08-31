@@ -17,4 +17,7 @@ import App from '@/App.vue'
 const app = createApp(App)
 registerComponents(app)
 
+import VeeValidatePlugin from './plugins/VeeValidatePlugin'
+app.use(VeeValidatePlugin)
+
 app.mount('#app')

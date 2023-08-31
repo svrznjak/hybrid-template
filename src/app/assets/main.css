@@ -1,0 +1,24 @@
+    /* Framework7 bugs */
+    .ios {
+        --f7-button-text-transform: none;
+        --f7-button-small-text-transform: none;
+        --f7-button-large-text-transform: none;
+      --f7-notification-title-text-transform: none;
+      --f7-fab-extended-text-transform: none;
+      
+      --f7-button-border-radius: 12px;
+      --f7-button-small-height: 26px;
+      --f7-button-height: 34px;
+      --f7-button-large-height: 46px;
+
+      --f7-list-inset-border-radius: 12px;
+    }
+    .ios .list-dividers-ios .item-inner:after {
+      width: calc(100% - var(--f7-list-inset-side-margin)); 
+    }
+
+    /* my styles */
+    .page-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }

@@ -9,6 +9,7 @@ console.log(__APP_CONFIG__);
 const f7params = {
   name: __APP_CONFIG__.APP_TITLE,
   routes,
+  darkTheme: true
 }
 console.log(sidePanelState.value)
 
@@ -21,7 +22,7 @@ console.log(sidePanelState.value)
     <f7-panel v-if="sidePanelState" left reveal dark :visible-breakpoint="1024">
       <LeftPanel />
     </f7-panel>
-    <f7-view main url="/" />
+    <f7-view main class="safe-areas" url="/" />
   </f7-app>
 </template>
 
