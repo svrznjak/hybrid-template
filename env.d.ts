@@ -5,4 +5,5 @@ declare const __APP_CONFIG__: {
   META_DESCRIPTION: string
   SAFARI_PINNED_TAB_COLOR: string
   THEME_COLOR: string
+  DEFAULT_LOCALE: string
 }

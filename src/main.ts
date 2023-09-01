@@ -1,5 +1,5 @@
 // Vue imports
-import { createApp } from 'vue'
+import { createApp, provide } from 'vue'
 // Framework7 imports
 // @ts-ignore because types are not available
 import Framework7 from 'framework7/lite-bundle'
@@ -17,7 +17,13 @@ import App from '@/App.vue'
 const app = createApp(App)
 registerComponents(app)
 
+import registerGlobalComponents from '@/global/components/registerGlobalComponents'
+registerGlobalComponents(app)
+
 import VeeValidatePlugin from './plugins/VeeValidatePlugin'
 app.use(VeeValidatePlugin)
+
+import i18n from './i18n-setup'
+app.use(i18n)
 
 app.mount('#app')

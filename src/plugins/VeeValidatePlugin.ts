@@ -1,11 +1,16 @@
+// import all default locales from @vee-validate/i18n
+import defaultTranslationsList from './VeeValidateTranslations/defaultTranslationsList'
+
 import { Form, defineRule, configure } from 'vee-validate'
 import FieldInput from '@/global/components/FieldInput.vue'
 import FieldListInput from '@/global/components/FieldListInput.vue'
 import rules from '@vee-validate/rules'
-import { localize, setLocale } from '@vee-validate/i18n'
+import { localize } from '@vee-validate/i18n'
 
 import defaultVeeTranslation from './VeeValidateTranslations/en-US.json'
-import locales from '@/data/locales.json'
+import locales from '@/global/data/locales.json'
+import { get } from 'http'
+import getDefaultTranslationsList from './VeeValidateTranslations/defaultTranslationsList'
 
 export default {
   install: (app: any) => {
@@ -21,9 +26,22 @@ export default {
       })
     }
 
-    //Import all translations from adjacent folder
+    //Import all translations from i18n package
+    ;(async () => {
+      const translations = await getDefaultTranslationsList()
+      translations.forEach((translation) => {
+        const code = translation.code
+        const messages = { messages: translation.messages }
+        configure({
+          generateMessage: localize(code, messages)
+        })
+      })
+    })()
+
+    //Import all translations from adjacent folder and overwrite translations
     ;(async () => {
       const imports = import.meta.glob('./VeeValidateTranslations/*.json')
+      console.log(imports)
       for (const path in imports) {
         const language: any = await imports[path]()
         const code = language.code
@@ -32,13 +50,9 @@ export default {
           generateMessage: localize(code, messages)
         })
       }
-      // default language in case no new language is set
-      setLocale('en-US')
     })()
 
     // register components to app (global)
     app.component('VeeForm', Form)
-    app.component('FieldInput', FieldInput)
-    app.component('FieldListInput', FieldListInput)
   }
 }

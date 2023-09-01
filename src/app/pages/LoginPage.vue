@@ -1,9 +1,11 @@
 
 <script setup lang="ts">
 import appState from '@/appState';
-import { f7ready, f7ListInput } from 'framework7-vue';
-import { nextTick, onMounted, reactive, ref } from 'vue';
+import { f7ready } from 'framework7-vue';
+import { onMounted } from 'vue';
+import setLocale from '@/global/utils/setLocale';
 import { Form, useForm, useField } from 'vee-validate';
+
 
 onMounted(() => {
   console.log('Home page mounted');
@@ -11,23 +13,16 @@ onMounted(() => {
     console.log('Home page f7ready');
     f7.panel.close();
   });
-  nextTick(() => {
-    mounted.value = true;
-  });
 });
-
-const mounted = ref(false)
 
 
 const { handleSubmit } = useForm({
   initialValues: {
     email: 'test',
-    gender: 'Male',
     password: '',
   },
 });
 const email = useField('email', 'required|email', { validateOnValueUpdate: false });
-const gender = useField('gender');
 const password = useField('password', 'required|min:8');
 
 
@@ -58,12 +53,6 @@ const doLogin = handleSubmit(async values => {
       <f7-list dividers-ios strong-ios inset-ios>
         <FieldListInput name="email" label="E-mail" type="email" placeholder="Your name" :field="email"
           @input="email.value.value = $event.target.value" clear-button />
-        <FieldListInput name="gender" label="Gender" type="select" :field="gender"
-          @input="gender.value.value = $event.target.value" clear-button>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-        </FieldListInput>
-
         <FieldListInput name="password" label="Password" type="password" placeholder="Your password" :field="password"
           @input="password.value.value = $event.target.value" clear-button />
       </f7-list>
@@ -72,5 +61,9 @@ const doLogin = handleSubmit(async values => {
         <f7-button fill round style="width: 100px;" type="submit">Login</f7-button>
       </f7-block>
     </Form>
+    <f7-button>{{ $t('privacy-policy') }}</f7-button>
+    <i18n-d :value="Date.now()" />
+    <f7-button @click="setLocale('nl')">en-US</f7-button>
+    <AppDuration :milliseconds="3600000" />
   </f7-page>
 </template>
