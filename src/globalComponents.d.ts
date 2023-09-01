@@ -89,6 +89,10 @@ import {
   f7View,
   f7Views
 } from 'framework7-vue'
+
+import FieldInput from '@/global/components/FieldInput.vue'
+import FieldListInput from '@/global/components/FieldListInput.vue'
+
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     f7AccordionContent: typeof f7AccordionContent
@@ -180,5 +184,7 @@ declare module '@vue/runtime-core' {
     f7UseIcon: typeof f7UseIcon
     f7View: typeof f7View
     f7Views: typeof f7Views
+    FieldInput: typeof FieldInput
+    FieldListInput: typeof FieldListInput
   }
 }

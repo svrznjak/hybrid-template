@@ -26,20 +26,13 @@ console.log(appState)
       </f7-nav-right>
     </f7-navbar> -->
     <f7-block>
-      <h1>Login</h1>
+      <h1>home</h1>
       <p>Here comes paragraph within content block. Donec et nulla auctor massa pharetra adipiscing ut sit amet sem.
         Suspendisse molestie velit vitae mattis tincidunt. Ut sit amet quam mollis, vulputate turpis vel, sagittis
         felis. </p>
     </f7-block>
-    <form>
-      <f7-list dividers-ios strong-ios inset-ios>
-        <f7-list-input label="E-mail" type="text" placeholder="Your name" clear-button />
-        <f7-list-input label="Password" type="password" placeholder="Your password" clear-button />
-      </f7-list>
-      <f7-block style="display: flex; gap: 10px; justify-content: space-between;">
-        <f7-button round-md>Forgot my password</f7-button>
-        <f7-button fill round style="width: 100px;">Login</f7-button>
-      </f7-block>
-    </form>
+    <f7-block style="display: flex; gap: 10px; justify-content: space-between;">
+      <f7-link href="/login" fill round style="width: 100px;">Login</f7-link>
+    </f7-block>
   </f7-page>
 </template>

@@ -1,4 +1,6 @@
-import { Form, Field, ErrorMessage, defineRule, configure } from 'vee-validate'
+import { Form, defineRule, configure } from 'vee-validate'
+import FieldInput from '@/global/components/FieldInput.vue'
+import FieldListInput from '@/global/components/FieldListInput.vue'
 import rules from '@vee-validate/rules'
 import { localize, setLocale } from '@vee-validate/i18n'
 
@@ -36,7 +38,7 @@ export default {
 
     // register components to app (global)
     app.component('VeeForm', Form)
-    app.component('VeeField', Field)
-    app.component('VeeErrorMessage', ErrorMessage)
+    app.component('FieldInput', FieldInput)
+    app.component('FieldListInput', FieldListInput)
   }
 }

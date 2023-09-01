@@ -40,10 +40,8 @@ defineExpose({
 
 <template>
   <div ref="thisInput">
-    <label :for="name">{{ label }}:</label>
-    <VeeErrorMessage :name="name" class="input-error" />
     <VeeField class="field" :name="name" :label="label" :as="$attrs.as" :modelValue="modelValue"
-      @input="$emit('modelUpdate', $event)" :id="name" v-bind="$attrs" data-error-message="Only numbers please!" />
+      @input="$emit('modelUpdate', $event)" :id="name" v-bind="$attrs" />
   </div>
 </template>
 
