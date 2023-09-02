@@ -2,8 +2,6 @@
 import appState from '@/appState';
 import { f7ready } from 'framework7-vue';
 import { onMounted } from 'vue';
-import { Form } from 'vee-validate';
-import AppFormField from '@/global/components/AppFormField.vue';
 
 onMounted(() => {
   console.log('Home page mounted');
