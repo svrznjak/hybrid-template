@@ -9,11 +9,11 @@
     "src/**/*.json",
     "**/*.ts",
   ],
+    "exclude": ["node_modules"],
   "compilerOptions": {
     "composite": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "types": ["node"],
-    "allowImportingTsExtensions": true,
   }
 }
