@@ -1,5 +1,4 @@
 import { MobileProject, MobileProjectConfig } from '@trapezedev/project'
-import assets from '@capacitor/assets'
 import __APP_CONFIG__ from './src/app/config.json' assert { type: 'json' }
 
 const config: MobileProjectConfig = {
@@ -54,4 +53,7 @@ if (project.android) {
 // ## Commit changes
 await project.commit()
 
-assets.run()
+import { execSync } from 'child_process'
+execSync(
+  "npx @capacitor/assets generate --iconBackgroundColor '#eeeeee' --iconBackgroundColorDark '#222222' --splashBackgroundColor '#eeeeee' --splashBackgroundColorDark '#111111'"
+)
