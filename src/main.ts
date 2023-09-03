@@ -1,5 +1,8 @@
+// capacitor imports
+import '@capacitor/core'
+
 // Vue imports
-import { createApp, provide } from 'vue'
+import { createApp } from 'vue'
 // Framework7 imports
 // @ts-ignore because types are not available
 import Framework7 from 'framework7/lite-bundle'
