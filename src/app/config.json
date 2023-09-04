@@ -5,7 +5,16 @@
   "VERSION": "0.0.1",
   "BUILD_NUMBER": 1,
   "META_DESCRIPTION": "My App description",
-  "SAFARI_PINNED_TAB_COLOR": "#000000",
-  "THEME_COLOR": "#000000",
+  "COLORS": {
+    "SAFARI_PINNED_TAB_COLOR": "#000000",
+    "THEME_COLOR": "#000000"
+  },
+  "ICON_AND_SPLASH": {
+    "backgroundColor": "#000000",
+    "backgroundColorDark": "#000000",
+    "splashBackgroundColor": "#000000",
+    "splashBackgroundColorDark": "#000000",
+    "logoSplashScale": 0.2
+  },
   "DEFAULT_LOCALE": "sl-SI"
 }

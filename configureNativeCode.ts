@@ -55,5 +55,13 @@ await project.commit()
 
 import { execSync } from 'child_process'
 execSync(
-  "npx @capacitor/assets generate --iconBackgroundColor '#eeeeee' --iconBackgroundColorDark '#222222' --splashBackgroundColor '#eeeeee' --splashBackgroundColorDark '#111111'"
+  `npx @capacitor/assets generate --assetPath './src/app/assets/appIcons' --iconBackgroundColor '${
+    __APP_CONFIG__.ICON_AND_SPLASH.backgroundColor || '#eeeeee'
+  }' --iconBackgroundColorDark '${
+    __APP_CONFIG__.ICON_AND_SPLASH.backgroundColorDark || '#222222'
+  }' --splashBackgroundColor '${
+    __APP_CONFIG__.ICON_AND_SPLASH.splashBackgroundColor || '#eeeeee'
+  }' --splashBackgroundColorDark '${
+    __APP_CONFIG__.ICON_AND_SPLASH.splashBackgroundColorDark || '#111111'
+  }' --logoSplashScale '${__APP_CONFIG__.ICON_AND_SPLASH.logoSplashScale || '0.2'}'`
 )

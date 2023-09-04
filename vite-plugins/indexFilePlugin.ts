@@ -7,8 +7,8 @@ export default function indexFilePlugin() {
       // Get the environment variable values for meta tags
       const title = appConfig.APP_TITLE || 'Title'
       const metaDescription = appConfig.META_DESCRIPTION || 'Description'
-      const safariPinnedTabColor = appConfig.SAFARI_PINNED_TAB_COLOR || '#2196f3'
-      const themeColor = appConfig.THEME_COLOR || '#2196f3'
+      const safariPinnedTabColor = appConfig.COLORS.SAFARI_PINNED_TAB_COLOR || '#2196f3'
+      const themeColor = appConfig.COLORS.THEME_COLOR || '#2196f3'
 
       // Generate the meta tags and add them to the HTML
       const tags = `
