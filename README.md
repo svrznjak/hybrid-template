@@ -22,7 +22,7 @@ The purpose of this template is to serve as a starting point for building qualit
 - Firestore database
 - Firebase Storage
 - Firebase Analytics
-- App subscriptions (Apple, Google, Stripe)
+- App subscriptions (Apple, Google, Stripe) - RevenueCat Subscription tracking
 - Push notifications
 - Offline support
 - Prebuild pages (login, signup, confirm email, forgot password, profile, settings, home, subscribe )
