@@ -10,9 +10,9 @@
     "THEME_COLOR": "#000000"
   },
   "ICON_AND_SPLASH": {
-    "backgroundColor": "#000000",
+    "backgroundColor": "#FFFFFF",
     "backgroundColorDark": "#000000",
-    "splashBackgroundColor": "#000000",
+    "splashBackgroundColor": "#FFFFFF",
     "splashBackgroundColorDark": "#000000",
     "logoSplashScale": 0.2
   },
