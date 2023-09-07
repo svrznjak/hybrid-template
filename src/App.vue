@@ -19,7 +19,6 @@ onMounted(() => {
   setLocale(__APP_CONFIG__.DEFAULT_LOCALE);
 });
 
-
 </script>
 
 <template>

@@ -16,5 +16,15 @@
     "splashBackgroundColorDark": "#000000",
     "logoSplashScale": 0.2
   },
-  "DEFAULT_LOCALE": "sl-SI"
+  "DEFAULT_LOCALE": "sl-SI",
+  "FIREBASE_CONFIG": {
+    "apiKey": "",
+    "authDomain": "",
+    "databaseURL": "",
+    "projectId": "",
+    "storageBucket": "",
+    "messagingSenderId": "",
+    "appId": "",
+    "measurementId": ""
+  }
 }

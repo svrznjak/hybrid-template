@@ -1,5 +1,7 @@
 
 <script setup lang="ts">
+import { getAuth, browserLocalPersistence, setPersistence } from "firebase/auth";
+import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
 import appState from '@/appState';
 import { f7ready } from 'framework7-vue';
 import { onMounted } from 'vue';
@@ -27,8 +29,7 @@ const password = useField('password', 'required|min:8');
 
 
 const doLogin = handleSubmit(async values => {
-  alert(JSON.stringify(values, null, 2));
-  /*try {
+  try {
     const auth: any = getAuth();
     await setPersistence(auth, browserLocalPersistence);
     await FirebaseAuthentication.signInWithEmailAndPassword({
@@ -36,7 +37,7 @@ const doLogin = handleSubmit(async values => {
     });
   } catch (err) {
     console.log(err);
-  }*/
+  }
 });
 
 
@@ -61,9 +62,5 @@ const doLogin = handleSubmit(async values => {
         <f7-button fill round style="width: 100px;" type="submit">Login</f7-button>
       </f7-block>
     </Form>
-    <f7-button>{{ $t('privacy-policy') }}</f7-button>
-    <i18n-d :value="Date.now()" />
-    <f7-button @click="setLocale('nl')">en-US</f7-button>
-    <AppDuration :milliseconds="3600000" />
   </f7-page>
 </template>

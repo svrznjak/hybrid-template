@@ -29,4 +29,7 @@ app.use(VeeValidatePlugin)
 import i18n from './i18n-setup'
 app.use(i18n)
 
+import templatePlugin from './plugins/templatePlugin'
+app.use(templatePlugin)
+
 app.mount('#app')

@@ -28,6 +28,6 @@ coverage
 *.sw?
 
 # App files
-src/app
+src/app/config.json
 src/app/*
 src/app/**/*
