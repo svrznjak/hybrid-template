@@ -4,7 +4,6 @@ import setLocale from '@/global/utils/setLocale';
 import routes from '@/app/routes';
 import appState from './appState';
 import LeftPanel from './app/LeftPanel.vue';
-import { onMounted } from 'vue';
 const sidePanelState = useStore(appState, 'getSidePanelState');
 console.log(__APP_CONFIG__);
 
@@ -15,10 +14,8 @@ const f7params = {
   darkTheme: true
 }
 
-onMounted(() => {
-  // set locale and initiate setLocale related vars
-  setLocale(__APP_CONFIG__.DEFAULT_LOCALE);
-});
+// set locale and initiate setLocale related vars
+setLocale(__APP_CONFIG__.DEFAULT_LOCALE);
 
 </script>
 
