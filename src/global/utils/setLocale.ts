@@ -1,6 +1,6 @@
 import { useI18n } from 'vue-i18n'
-import getDefaultTranslationsList from '@/plugins/VeeValidateTranslations/defaultTranslationsList'
 import { setLocale as setVeeValidateLocale } from '@vee-validate/i18n'
+import defaultTranslationsList from '@/plugins/VeeValidateTranslations/defaultTranslationsList'
 
 let i18n: any = undefined
 
@@ -10,8 +10,8 @@ export default async function setLocale(newLocale: string) {
 
   // set vee-validate locale
   // get all available locales
-  const translations = await getDefaultTranslationsList()
-  const codes = translations.map((translation) => {
+  const translations = defaultTranslationsList
+  const codes = (await Promise.all(translations)).map((translation) => {
     return translation.code.replace('_', '-')
   })
 
