@@ -12,11 +12,8 @@ const appState = createStore({
   // actions to operate with state and for async manipulations
   actions: {
     // context object containing store state will be passed as an argument
-    enableSidePanel(context: any) {
-      context.state.hasSidePanel = true
-    },
-    disableSidePanel(context: any) {
-      context.state.hasSidePanel = false
+    setSidePanel(context: any, show: boolean) {
+      context.state.hasSidePanel = show
     }
   },
 

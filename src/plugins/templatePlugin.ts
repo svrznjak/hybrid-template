@@ -29,19 +29,15 @@ export default {
       if (user != undefined) {
         // User exists in firebase
         // If user has unverified email redirect to verifyEmail
-        if (user.emailVerified) {
-          //navigateTo("/verifyEmail");
-          console.log('/verifyEmail')
+        if (!user.emailVerified) {
+          router.navigate({ name: 'verifyEmail' })
         } else {
           try {
             // if redirect exists redirect to redirect path
             if (router.currentRoute.query.redirectTo)
               router.navigate({ path: router.currentRoute.query.redirectTo as string })
             // if user is loged in and on login or register or initializeUser page redirect to budgets
-            else if (
-              router.currentRoute.name === 'login' ||
-              router.currentRoute.name === 'register'
-            ) {
+            else {
               router.navigate({ name: 'home' })
             }
 
@@ -52,8 +48,8 @@ export default {
         }
       } else {
         //userStore.$reset()
-        if (router.currentRoute.name !== 'login')
-          router.navigate({ name: 'login' }, { reloadAll: true })
+        if (router.currentRoute.name !== 'welcome')
+          router.navigate({ name: 'welcome' }, { reloadAll: true })
       }
     })
   }

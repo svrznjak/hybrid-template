@@ -10,7 +10,10 @@ console.log(__APP_CONFIG__);
 const f7params = {
   name: __APP_CONFIG__.APP_TITLE,
   routes,
-  browserHistory: true,
+  view: {
+    browserHistory: true,
+    browserHistorySeparator: "#app",
+  },
   darkTheme: true
 }
 
