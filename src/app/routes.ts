@@ -7,6 +7,7 @@ import EmailLoginPage from '#/pages/EmailLoginPage.vue'
 import RegisterPage from '#/pages/RegisterPage.vue'
 import VerifyEmailPage from '#/pages/VerifyEmailPage.vue'
 import NotFoundPage from '#/pages/NotFoundPage.vue'
+import ResetPasswordPage from './pages/ResetPasswordPage.vue'
 
 export default [
   {
@@ -34,10 +35,16 @@ export default [
     beforeEnter: [redirectIfAuth]
   },
   {
-    path: '/verfiy-email',
+    path: '/verify-email',
     name: 'verifyEmail',
     component: VerifyEmailPage,
     beforeEnter: [requireAuth]
+  },
+  {
+    path: '/reset-password',
+    name: 'resetPassword',
+    component: ResetPasswordPage,
+    beforeEnter: [redirectIfAuth]
   },
   {
     path: '(.*)',
@@ -55,13 +62,16 @@ function isEmailVerified() {
   return auth.currentUser?.emailVerified
 }
 
-function requireAuth({ resolve, reject, router }: any) {
+function requireAuth({ resolve, reject, router, to }: any) {
   if (!isAuthenticated()) {
     reject()
-    if (!isEmailVerified()) router.navigate('/verfiy-email')
-    else router.navigate('/')
   } else {
-    resolve()
+    if (!isEmailVerified() && to.name !== 'verifyEmail') {
+      reject()
+      router.navigate('/verify-email')
+    } else {
+      resolve()
+    }
   }
 }
 

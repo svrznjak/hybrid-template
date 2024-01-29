@@ -18,13 +18,11 @@
   },
   "DEFAULT_LOCALE": "sl-SI",
   "FIREBASE_CONFIG": {
-    "apiKey": "AIzaSyC6vUe5dTcmzdnvqQrlP2EmfO1M4nvKMaA",
-    "authDomain": "bralko.firebaseapp.com",
-    "databaseURL": "https://bralko-default-rtdb.europe-west1.firebasedatabase.app",
-    "projectId": "bralko",
-    "storageBucket": "bralko.appspot.com",
-    "messagingSenderId": "680939440743",
-    "appId": "1:680939440743:web:3e6cbd7663d4640c5562c2",
-    "measurementId": "G-S9RWSCT73E"
+  "apiKey": "AIzaSyDMuaTXoAfA-uB-4tCPwaTDEpU_WbFScpo",
+  "authDomain": "emg-app-4fe1b.firebaseapp.com",
+  "projectId": "emg-app-4fe1b",
+  "storageBucket": "emg-app-4fe1b.appspot.com",
+  "messagingSenderId": "383260058939",
+  "appId": "1:383260058939:web:509453a197edbf2b07831e"
   }
 }

@@ -3,10 +3,15 @@ import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
 import appState from '@/appState';
 import { f7ready } from 'framework7-vue';
 import { onMounted } from 'vue';
+import messages from './HomePage.i18n.json';
+import { useI18n } from "vue-i18n";
+const { t } = useI18n({
+  messages
+});
 
 onMounted(() => {
   f7ready((f7) => {
-    appState.dispatch('setSidePanel', true);
+    appState.dispatch('setSidePanel', false);
     console.log('Home page f7ready');
     f7.panel.close();
   });

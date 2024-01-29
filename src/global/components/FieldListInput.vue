@@ -15,8 +15,6 @@ defineProps({
     type: Object as PropType<FieldContext>,
     required: true,
   },
-
-
 })
 </script>
 

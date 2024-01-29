@@ -1,9 +1,17 @@
 {
     "en": {
+        "dialog":{
+            "OK": "OK",
+            "cancel": "Cancel"
+        },
         "privacy-policy": "Privacy Policy",
         "terms-of-service": "Terms of Service"
     },
     "sl": {
+        "dialog":{
+            "OK": "V redu",
+            "cancel": "Prekliči"
+        },
         "privacy-policy": "Pravilnik o zasebnosti",
         "terms-of-service": "Pogoji uporabe"
     }
