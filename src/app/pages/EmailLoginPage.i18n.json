@@ -1,0 +1,32 @@
+{
+  "en":{
+    "login": "Login",
+    "description": "Here comes paragraph within content block. Donec et nulla auctor massa pharetra adipiscing ut sit amet sem. Suspendisse molestie velit vitae mattis tincidunt. Ut sit amet quam mollis, vulputate turpis vel, sagittis felis.",
+    "email": "Email",
+    "your-email": "Your email",
+    "password": "Password",
+    "your-password": "Your password",
+    "forgot-password": "Forgot password?",
+    "alerts": {
+      "signing-in": "Signing in...",
+      "login-failed": "Login failed",
+      "wrong-password": "Wrong email or password.",
+      "too-many-requests": "Too many requests. Please try again later."
+    }
+  },
+  "sl":{
+    "login": "Prijava",
+    "description": "Za prijavo vpišite svoj e-poštni naslov in geslo.",
+    "email": "E-pošta",
+    "your-email": "Vaša e-pošta",
+    "password": "Geslo",
+    "your-password": "Vaše geslo",
+    "forgot-password": "Ste pozabili geslo?",
+    "alerts": {
+      "signing-in": "Prijavljanje...",
+      "login-failed": "Prijava ni uspela",
+      "wrong-password": "Napačen e-poštni naslov ali geslo.",
+      "too-many-requests": "Preveč zahtev. Prosimo poskusite kasneje."
+    }
+  }
+}

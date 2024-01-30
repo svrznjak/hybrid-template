@@ -1,0 +1,32 @@
+{
+  "en":{
+    "register": "Register",
+    "description": "Here you can create new account with your email address and password.", 
+    "email": "Email",
+    "your-email": "Your email",
+    "password": "Password",
+    "your-password": "Your password",
+    "cancel": "Cancel",
+    "alerts": {
+      "signing-up": "Signing up...",
+      "signup-failed": "Signup failed",
+      "email-in-use": "Email is already in use. Please choose another one.",
+      "too-many-requests": "Too many requests. Please try again later."
+    }
+  },
+  "sl": {
+    "register": "Registracija",
+    "description": "Tukaj lahko ustvarite nov račun z vašim email naslovom in geslom.",
+    "email": "Email",
+    "your-email": "Vaš email",
+    "password": "Geslo",
+    "your-password": "Vaše geslo",
+    "cancel": "Prekliči",
+    "alerts": {
+      "signing-up": "Registracija...",
+      "signup-failed": "Registracija ni uspela",
+      "email-in-use": "Email je že v uporabi. Prosimo izberite drugega.",
+      "too-many-requests": "Preveč zahtev. Prosimo poskusite kasneje."
+    }
+  }
+}
