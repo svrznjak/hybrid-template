@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { useStore, f7 } from 'framework7-vue';
+import { useStore } from 'framework7-vue';
 import setLocale from '@/global/utils/setLocale';
 import routes from '@/app/routes';
 import appState from './appState';
 import LeftPanel from './app/LeftPanel.vue';
 import { useI18n } from 'vue-i18n';
-import { onMounted, ref } from 'vue';
-import templatePlugin from './plugins/templatePlugin';
 const { t } = useI18n();
 const sidePanelState = useStore(appState, 'getSidePanelState');
 console.log(__APP_CONFIG__);

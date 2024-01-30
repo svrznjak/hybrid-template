@@ -8,20 +8,9 @@ const { t } = useI18n({
   messages
 });
 import { FirebaseFirestore } from '@capacitor-firebase/firestore';
-import { activeConnections, useCollection } from "../store/useCollection";
+import { useCollection } from "../store/useCollection";
+import getParentReference from "../utils/getParentReference";
 appState.dispatch('setSidePanel', false);
-
-function getParentDocument(reference: string): string {
-  // Remove last char if it is a slash
-  let parentRef = reference.endsWith("/") ? reference.slice(0, -1) : reference;
-
-  for (let i = 0; i < 2; i++) {
-    let index = parentRef.lastIndexOf("/");
-    parentRef = parentRef.substring(0, index);
-  }
-
-  return parentRef;
-}
 
 const getUsersCompanies = async (userId: string) => {
   const { snapshots } = await FirebaseFirestore.getCollectionGroup({
@@ -39,7 +28,7 @@ const getUsersCompanies = async (userId: string) => {
     },
   });
   const companiesReferences = snapshots.map((snap: any) => {
-    return getParentDocument(getParentDocument(snap.path));
+    return getParentReference(snap.path, 4);
   });
   return companiesReferences;
 };
@@ -80,7 +69,7 @@ async function logOut() {
       </div>
     </f7-block>
     <f7-block-title>{{ t('Aktivni') }}</f7-block-title>
-    <f7-list media-list dividers-md dividers-ios strong-ios outline-ios v-if="projects">
+    <f7-list media-list dividers strong-ios outline-ios v-if="projects">
       <f7-list-item v-for="project in projects.data" :key="project.id" :link="`projects/${project.id}`"
         :title="project.name" after="od junija do maja" :subtitle="project.customer"
         text="10 zaposlenih | 2 avtomobila | 2 kartici">
@@ -91,4 +80,10 @@ async function logOut() {
     </f7-block>
   </f7-page>
 </template>
-<style></style>
+<style>
+/** Global fixes */
+.md .list.fix-inset .item-inner {
+  padding-right: 0px;
+  margin-right: calc(var(--f7-list-item-padding-horizontal) + var(--f7-safe-area-right));
+}
+</style>

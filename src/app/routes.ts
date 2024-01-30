@@ -10,7 +10,9 @@ import NotFoundPage from '#/pages/NotFoundPage.vue';
 import ResetPasswordPage from './pages/ResetPasswordPage.vue';
 
 import ResourceTypesPageVue from './pages/ResourceTypesPage.vue';
-import ResourcesPageVue from './pages/ResourcePage.vue';
+import ResourcesPageVue from './pages/ResourcesPage.vue';
+import ResourcePageVue from './pages/ResourcePage.vue';
+import ResourceTypeSettingsPageVue from './pages/ResourceTypeSettingsPage.vue';
 export default [
   {
     path: '/',
@@ -28,6 +30,18 @@ export default [
     path: '/Companies/:companyId/resourceTypes/:resourceTypeId/resources',
     name: 'resources',
     component: ResourcesPageVue,
+    beforeEnter: [requireAuth]
+  },
+  {
+    path: '/Companies/:companyId/resourceTypes/:resourceTypeId/settings',
+    name: 'resourceSettings',
+    component: ResourceTypeSettingsPageVue,
+    beforeEnter: [requireAuth]
+  },
+  {
+    path: '/Companies/:companyId/resourceTypes/:resourceTypeId/resources/:resourceId',
+    name: 'resource',
+    component: ResourcePageVue,
     beforeEnter: [requireAuth]
   },
   {

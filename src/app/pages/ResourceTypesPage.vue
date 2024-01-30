@@ -41,7 +41,7 @@ onUnmounted(async () => {
         }}</f7-button>
       </div>
     </f7-block>
-    <f7-list dividers-md dividers-ios strong-ios outline-ios v-if="resourceTypes !== undefined">
+    <f7-list dividers strong-ios outline-ios v-if="resourceTypes !== undefined" class="fix-inset">
       <f7-list-item v-for="resourceType in resourceTypes.data" :key="resourceType.id"
         :link="`${resourceType.id}/resources`" :title="resourceType.name">
       </f7-list-item>

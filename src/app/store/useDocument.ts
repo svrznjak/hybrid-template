@@ -23,12 +23,11 @@ export async function useDocument(path: string) {
         if (error) {
           console.error(error);
         } else {
-          activeDocuments[path].data = event.snapshots.map((snap: any) => {
-            return {
-              id: snap.id,
-              ...snap.data
-            };
-          });
+          console.log(event);
+          activeDocuments[path].data = {
+            id: event.snapshot.id,
+            ...event.snapshot.data
+          };
         }
       }
     );
