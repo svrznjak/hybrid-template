@@ -9,20 +9,23 @@ import rtDatabase from './templatePlugin/firebase/rtDatabase';
 
 import nativeAppBoot from './templatePlugin/nativeAppBoot';
 
+let isMounted = false;
+
 export default {
   install: (app: any) => {
-    // if native set capacitor settings
-    (async () => {
-      if (await isNative()) nativeAppBoot();
-    })();
-
-    // Set up firebase and auth listener
-
     const firebaseApp = initializeApp(firebaseConfig);
     const analytics = getAnalytics(firebaseApp);
     rtDatabase.initDatabse(firebaseApp);
-
-    FirebaseAuthentication.addListener('authStateChange', async (authStateChange: any) => {
+  },
+  async initialize(callback: Function) {
+    // if native set capacitor settings
+    if (await isNative()) nativeAppBoot();
+    // Set up firebase and auth listener
+    await FirebaseAuthentication.addListener('authStateChange', (authStateChange: any) => {
+      if (!isMounted) {
+        callback();
+        isMounted = true;
+      }
       const router = f7.views.main.router;
       console.log(authStateChange);
       const user = authStateChange.user;

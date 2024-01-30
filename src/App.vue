@@ -5,6 +5,8 @@ import routes from '@/app/routes';
 import appState from './appState';
 import LeftPanel from './app/LeftPanel.vue';
 import { useI18n } from 'vue-i18n';
+import { onMounted, ref } from 'vue';
+import templatePlugin from './plugins/templatePlugin';
 const { t } = useI18n();
 const sidePanelState = useStore(appState, 'getSidePanelState');
 console.log(__APP_CONFIG__);
@@ -25,9 +27,8 @@ const f7params = {
     buttonOk: t('dialog.OK'),
     buttonCancel: t('dialog.cancel'),
   },
-  darkTheme: true
+  darkTheme: true,
 }
-
 
 </script>
 

@@ -18,6 +18,7 @@ import '#/assets/main.css';
 import App from '@/App.vue';
 
 const app = createApp(App);
+
 registerComponents(app);
 
 import registerGlobalComponents from '@/global/components/registerGlobalComponents';
@@ -32,7 +33,9 @@ app.use(i18n);
 import templatePlugin from './plugins/templatePlugin';
 app.use(templatePlugin);
 
-app.mount('#app');
-
 import { f7 } from 'framework7-vue';
-app.config.globalProperties.$router = f7.views.main.router;
+templatePlugin.initialize(() => {
+  app.mount('#app');
+
+  app.config.globalProperties.$router = f7.views.main.router;
+});

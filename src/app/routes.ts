@@ -1,19 +1,33 @@
-import { getAuth } from 'firebase/auth'
+import { getAuth } from 'firebase/auth';
 
 // import pages from './pages';
-import HomePage from '#/pages/HomePage.vue'
-import WelcomePage from '#/pages/WelcomePage.vue'
-import EmailLoginPage from '#/pages/EmailLoginPage.vue'
-import RegisterPage from '#/pages/RegisterPage.vue'
-import VerifyEmailPage from '#/pages/VerifyEmailPage.vue'
-import NotFoundPage from '#/pages/NotFoundPage.vue'
-import ResetPasswordPage from './pages/ResetPasswordPage.vue'
+import HomePage from '#/pages/HomePage.vue';
+import WelcomePage from '#/pages/WelcomePage.vue';
+import EmailLoginPage from '#/pages/EmailLoginPage.vue';
+import RegisterPage from '#/pages/RegisterPage.vue';
+import VerifyEmailPage from '#/pages/VerifyEmailPage.vue';
+import NotFoundPage from '#/pages/NotFoundPage.vue';
+import ResetPasswordPage from './pages/ResetPasswordPage.vue';
 
+import ResourceTypesPageVue from './pages/ResourceTypesPage.vue';
+import ResourcesPageVue from './pages/ResourcePage.vue';
 export default [
   {
     path: '/',
     name: 'home',
     component: HomePage,
+    beforeEnter: [requireAuth]
+  },
+  {
+    path: '/Companies/:companyId/resourceTypes',
+    name: 'resourceTypes',
+    component: ResourceTypesPageVue,
+    beforeEnter: [requireAuth]
+  },
+  {
+    path: '/Companies/:companyId/resourceTypes/:resourceTypeId/resources',
+    name: 'resources',
+    component: ResourcesPageVue,
     beforeEnter: [requireAuth]
   },
   {
@@ -50,36 +64,36 @@ export default [
     path: '(.*)',
     component: NotFoundPage
   }
-]
+];
 
 function isAuthenticated() {
-  const auth = getAuth()
-  return auth.currentUser !== null
+  const auth = getAuth();
+  return auth.currentUser !== null;
 }
 
 function isEmailVerified() {
-  const auth = getAuth()
-  return auth.currentUser?.emailVerified
+  const auth = getAuth();
+  return auth.currentUser?.emailVerified;
 }
 
 function requireAuth({ resolve, reject, router, to }: any) {
   if (!isAuthenticated()) {
-    reject()
+    reject();
   } else {
     if (!isEmailVerified() && to.name !== 'verifyEmail') {
-      reject()
-      router.navigate('/verify-email')
+      reject();
+      router.navigate('/verify-email');
     } else {
-      resolve()
+      resolve();
     }
   }
 }
 
 function redirectIfAuth({ resolve, reject, router }: any) {
   if (isAuthenticated()) {
-    reject()
-    router.navigate('/')
+    reject();
+    router.navigate('/');
   } else {
-    resolve()
+    resolve();
   }
 }
