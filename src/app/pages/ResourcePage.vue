@@ -33,7 +33,7 @@ const isEditMode = ref(false);
 
 const customFields = computed(() => {
   if (currentResourceType.value && currentResourceType.value.data && resource.value && resource.value.data) {
-    const resourceTypeFields = JSON.parse(currentResourceType.value.data.typeFields);
+    const resourceTypeFields = currentResourceType.value.data.typeFields;
     const customFields = [];
     for (const field of resourceTypeFields) {
       customFields.push({

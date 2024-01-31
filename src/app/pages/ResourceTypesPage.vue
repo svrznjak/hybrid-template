@@ -7,6 +7,7 @@ const { t } = useI18n({
   messages
 });
 import { unsubscribeFromCollection, useCollection } from "../store/useCollection";
+import ResourceTypeAddSheet from '../components/ResourceTypeAddSheet.vue';
 appState.dispatch('setSidePanel', false);
 
 const props = defineProps({
@@ -29,6 +30,8 @@ onUnmounted(async () => {
 });
 
 
+const isOpenAddNew = ref(false);
+
 </script>
 <template>
   <f7-page name="resourceTypes">
@@ -37,7 +40,7 @@ onUnmounted(async () => {
     <f7-block style="display: flex; gap: 10px;  justify-content: space-between;">
       <h1 style="margin-bottom: 0px">{{ t('Vrste virov') }}</h1>
       <div style="display: flex; gap: 10px;">
-        <f7-button fill round style="width: fit-content;" @click="console.log('asd')">{{ t('Nova vrsta vira')
+        <f7-button fill round style="width: fit-content;" @click="isOpenAddNew = true">{{ t('Nova vrsta vira')
         }}</f7-button>
       </div>
     </f7-block>
@@ -46,6 +49,8 @@ onUnmounted(async () => {
         :link="`${resourceType.id}/resources`" :title="resourceType.name">
       </f7-list-item>
     </f7-list>
+    <ResourceTypeAddSheet :collectionPath="'/Companies/' + props.companyId + '/resourceTypes/'" :isOpen="isOpenAddNew"
+      @close="isOpenAddNew = false" />
   </f7-page>
 </template>
 <style></style>

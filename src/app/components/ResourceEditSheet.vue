@@ -90,9 +90,21 @@ function getFieldById(id: number) {
         <h1>{{ t('Urejanje') }}</h1>
       </f7-block>
       <f7-list form dividers outline-ios @submit="saveResource">
-        <FieldListInput v-for="field, index of inputFields" :key="field.id" :type="getFieldById(index)?.type || 'text'"
-          :label="getFieldById(index)?.name || ''" :field="field" @input="field.value.value = $event.target.value"
-          clear-button />
+        <span v-for="field, index of inputFields" :key="field.id">
+          <FieldListInput v-if="getFieldById(index)?.type.input !== 'checkbox'"
+            :type="getFieldById(index)?.type.input || 'text'" :label="getFieldById(index)?.name || ''" :field="field"
+            @input="field.value.value = $event.target.value" clear-button>
+            <option v-if="getFieldById(index)?.type.input === 'select'"
+              v-for="option of getFieldById(index)?.type.options.split(';') || []" :key="option" :value="option">{{
+                option }}</option>
+          </FieldListInput>
+          <f7-block-title v-if="getFieldById(index)?.type.input === 'checkbox'">{{
+            getFieldById(index).name }}</f7-block-title>
+          <f7-list v-if="getFieldById(index)?.type.input === 'checkbox'" outline inset-md>
+            <f7-list-item checkbox v-model:checked="jobIsDone"
+              v-for="option of getFieldById(index)?.type.options.split(';') || []" :title="option"></f7-list-item>
+          </f7-list>
+        </span>
         <f7-block style="display: flex; gap: 10px; justify-content: space-between;">
           <f7-button round-md @click="$emit('close')">{{ t('Prekliči') }}</f7-button>
           <f7-button fill round style="width: 150px;" type="submit">{{ t('Shrani') }}</f7-button>

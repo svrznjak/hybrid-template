@@ -18,7 +18,7 @@ const f7params = {
   view: {
     browserHistory: true,
     browserHistorySeparator: "#app",
-    browserHistoryInitialMatch: true,
+    //browserHistoryInitialMatch: true,
   },
   dialog: {
     title: __APP_CONFIG__.APP_TITLE,

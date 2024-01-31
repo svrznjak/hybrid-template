@@ -40,7 +40,7 @@ onUnmounted(async () => {
 
 const allFields = computed(() => {
   if (currentResourceType.value && currentResourceType.value.data) {
-    const resourceTypeFields = JSON.parse(currentResourceType.value.data.typeFields);
+    const resourceTypeFields = currentResourceType.value.data.typeFields;
     const customFields = [];
     for (const field of resourceTypeFields) {
       customFields.push({
@@ -48,7 +48,8 @@ const allFields = computed(() => {
         name: field.name,
         value: '',
         rules: field.rules,
-        type: field.type
+        type: field.type,
+        showInList: field.showInList,
       });
     }
     console.log(customFields)
@@ -62,6 +63,19 @@ const allFields = computed(() => {
   }
   return [];
 });
+
+const displayedCustomFields = computed(() => {
+  return allFields.value.filter(field => field.showInList);
+});
+
+function generateCustomFieldsText(resource) {
+  let text = "";
+  displayedCustomFields.value.forEach(field => {
+    if (resource[field.id] !== undefined)
+      text += field.name + ": " + resource[field.id] + " | ";
+  });
+  return text
+}
 
 const isAddMode = ref(false);
 
@@ -81,8 +95,9 @@ const isAddMode = ref(false);
         }}</f7-button>
       </div>
     </f7-block>
-    <f7-list dividers strong-ios outline-ios v-if="resources">
+    <f7-list media-list dividers strong-ios outline-ios v-if="resources">
       <f7-list-item v-for="resource in resources.data" :key="resource.id" :link="`${resource.id}`" :title="resource.name">
+        <span style="font-size:13px">{{ generateCustomFieldsText(resource) }}</span>
       </f7-list-item>
     </f7-list>
     <ResourceEditSheet v-if="allFields.length > 0"
