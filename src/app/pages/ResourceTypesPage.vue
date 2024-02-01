@@ -46,7 +46,8 @@ const isOpenAddNew = ref(false);
     </f7-block>
     <f7-list dividers strong-ios outline-ios v-if="resourceTypes !== undefined" class="fix-inset">
       <f7-list-item v-for="resourceType in resourceTypes.data" :key="resourceType.id"
-        :link="`${resourceType.id}/resources`" :title="resourceType.name">
+        :link="`${resourceType.id}/resources`" :title="resourceType.name"
+        :badge="!resourceType.isActive ? t('Ni aktiven') : undefined">
       </f7-list-item>
     </f7-list>
     <ResourceTypeAddSheet :collectionPath="'/Companies/' + props.companyId + '/resourceTypes/'" :isOpen="isOpenAddNew"

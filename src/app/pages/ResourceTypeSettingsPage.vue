@@ -49,7 +49,8 @@ const nameAndDescription = computed(() => {
   if (currentResourceType.value && currentResourceType.value.data) {
     return {
       name: currentResourceType.value.data.name,
-      description: currentResourceType.value.data.description
+      description: currentResourceType.value.data.description,
+      isActive: currentResourceType.value.data.isActive
     }
   }
   return undefined;
@@ -68,7 +69,9 @@ const editingFieldId = ref<undefined | string>(undefined);
     <f7-block v-if="currentResourceType" inset outline strong-ios>
       <div style="display: flex; justify-content: space-between; flex-wrap: wrap-reverse;">
         <h1 style="margin-bottom: 0px; ">{{ currentResourceType.data ?
-          currentResourceType.data.name : "" }}
+          currentResourceType.data.name : "" }} <f7-chip
+            v-if="currentResourceType.data !== undefined && !currentResourceType.data.isActive">{{ t('Ni aktiven')
+            }}</f7-chip>
         </h1>
         <f7-button @click="isOpenNameEdit = true" style="width:fit-content;"><f7-icon f7="pencil"></f7-icon></f7-button>
       </div>

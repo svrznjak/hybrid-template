@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import appState from '@/appState';
-import { type PropType } from 'vue';
+import { ref, type PropType, reactive } from 'vue';
 import messages from '../pages/HomePage.i18n.json';
 import { useI18n } from "vue-i18n";
 const { t } = useI18n({
@@ -10,6 +10,7 @@ import { useField, useForm } from 'vee-validate';
 import FieldListInput from '@/global/components/FieldListInput.vue';
 import { FirebaseFirestore } from '@capacitor-firebase/firestore';
 import { f7 } from 'framework7-vue';
+import _ from 'lodash';
 appState.dispatch('setSidePanel', false);
 
 const props = defineProps({
@@ -28,16 +29,21 @@ const props = defineProps({
     required: true
   },
 })
-
+console.log(props.isOpen)
 const emit = defineEmits<{
   (e: 'close'): void
 }>()
 
-
 const initialValues = {};
 
 props.fields.forEach(field => {
-  initialValues[field.id] = field.value || '';
+  if (field.type.input === 'checkbox') {
+    console.log(field.value)
+    initialValues[field.id] = field.value || {};
+  }
+  else
+    if (field.type.input === 'toggle') initialValues[field.id] = field.value || false;
+    else initialValues[field.id] = field.value || '';
 });
 
 const { handleSubmit } = useForm({
@@ -47,24 +53,49 @@ const inputFields: any = {};
 
 console.log(props.fields)
 
+const arrayOfCheckboxes = [];
+
 for (const field of props.fields) {
-  inputFields[field.id] = useField(field.id, field.rules, { validateOnValueUpdate: false, label: field.name });
+  if (field.id === 'isActive') continue;
+  if (field.type.input === 'checkbox') {
+    arrayOfCheckboxes.push(field.id);
+    inputFields[field.id] = reactive({
+    });
+
+    field.type.options.split(';').forEach(option => {
+      inputFields[field.id][option] = false;
+    });
+
+    for (const initialValueKey in initialValues[field.id]) {
+      inputFields[field.id][initialValueKey] = initialValues[field.id][initialValueKey]
+    }
+  } else {
+    inputFields[field.id] = useField(field.id, field.rules, { validateOnValueUpdate: false, label: field.name });
+  }
 }
 console.log(inputFields)
 
+console.log(getFieldById('isActive'))
+
+const isActive = ref(getFieldById('isActive')?.value);
 
 const saveResource = handleSubmit(async values => {
   try {
     f7.dialog.preloader(t('Shranjevanje'));
+    // add checkboxes to values
+    arrayOfCheckboxes.forEach(checkboxKey => {
+      values[checkboxKey] = inputFields[checkboxKey];
+    })
+
     if (props.documentPath === undefined && props.collectionPath !== undefined) {
       await FirebaseFirestore.addDocument({
         reference: props.collectionPath,
-        data: values
+        data: { ...values, isActive: isActive.value }
       });
     } else if (props.documentPath !== undefined && props.collectionPath === undefined) {
       await FirebaseFirestore.updateDocument({
         reference: props.documentPath,
-        data: values
+        data: { ...values, isActive: isActive.value }
       });
     }
     f7.dialog.close();
@@ -76,35 +107,41 @@ const saveResource = handleSubmit(async values => {
   }
 });
 
-
-function getFieldById(id: number) {
+function getFieldById(id: string) {
   return props.fields.find(field => field.id == id.toString());
 }
 
 </script>
 <template>
   <f7-sheet :opened="isOpen" backdrop :close-by-backdrop-click="false" :close-by-outside-click="false"
-    style="height: 80%;">
+    style="height: 90%;">
     <f7-page-content>
-      <f7-block>
-        <h1>{{ t('Urejanje') }}</h1>
+      <f7-block style="display: flex; gap: 10px; justify-content: space-between;">
+        <h1 style="margin-bottom: 0;">{{ t('Urejanje') }}</h1>
+        <f7-toggle color="green" v-model:checked="isActive"></f7-toggle>
       </f7-block>
-      <f7-list form dividers outline-ios @submit="saveResource">
-        <span v-for="field, index of inputFields" :key="field.id">
-          <FieldListInput v-if="getFieldById(index)?.type.input !== 'checkbox'"
+      <hr />
+      <f7-list form dividers @submit="saveResource">
+        <template v-for="field, index of inputFields" :key="field.id">
+          <FieldListInput
+            v-if="getFieldById(index)?.type.input !== 'checkbox' && getFieldById(index)?.type.input !== 'toggle'"
             :type="getFieldById(index)?.type.input || 'text'" :label="getFieldById(index)?.name || ''" :field="field"
-            @input="field.value.value = $event.target.value" clear-button>
+            @input="field.value.value = $event.target.value" outline clear-button>
             <option v-if="getFieldById(index)?.type.input === 'select'"
               v-for="option of getFieldById(index)?.type.options.split(';') || []" :key="option" :value="option">{{
                 option }}</option>
           </FieldListInput>
-          <f7-block-title v-if="getFieldById(index)?.type.input === 'checkbox'">{{
-            getFieldById(index).name }}</f7-block-title>
-          <f7-list v-if="getFieldById(index)?.type.input === 'checkbox'" outline inset-md>
-            <f7-list-item checkbox v-model:checked="jobIsDone"
-              v-for="option of getFieldById(index)?.type.options.split(';') || []" :title="option"></f7-list-item>
+          <f7-list v-if="getFieldById(index)?.type.input === 'checkbox'" outline inset
+            style="margin-bottom:10px; margin-top: 10px">
+            <f7-list-item style="margin-left: -30px" checkbox v-model:checked="field[option]"
+              v-for="option, i of getFieldById(index)?.type.options.split(';') || []" :title="option"></f7-list-item>
           </f7-list>
-        </span>
+          <f7-list-item v-if="getFieldById(index)?.type.input === 'toggle'" outline inset>
+            <span>{{ getFieldById(index)?.name }}</span>
+            <f7-toggle v-model:checked="field.value.value"></f7-toggle>
+          </f7-list-item>
+        </template>
+        <hr />
         <f7-block style="display: flex; gap: 10px; justify-content: space-between;">
           <f7-button round-md @click="$emit('close')">{{ t('Prekliči') }}</f7-button>
           <f7-button fill round style="width: 150px;" type="submit">{{ t('Shrani') }}</f7-button>

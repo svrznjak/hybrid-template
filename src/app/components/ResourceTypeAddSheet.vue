@@ -42,6 +42,7 @@ const saveNameAndDescription = handleSubmit(async values => {
       reference: props.collectionPath,
       data: {
         ...values,
+        isActive: true,
         typeFields: [],
       }
     });

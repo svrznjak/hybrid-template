@@ -41,7 +41,17 @@ export default {
               router.navigate({ path: router.currentRoute.query.redirectTo as string });
             // if user is loged in and on login or register or initializeUser page redirect to budgets
             else {
-              //router.navigate({ name: 'home' });
+              const RN = router.currentRoute.name;
+              if (
+                RN === 'welcome' ||
+                RN === 'emailLogin' ||
+                RN === 'register' ||
+                RN === 'resetPassword' ||
+                RN === 'verifyEmail'
+              )
+                setTimeout(() => {
+                  router.navigate({ name: 'home' });
+                }, 1000);
             }
 
             // try to get user server from firestore
