@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { useStore } from 'framework7-vue';
+import { f7, useStore } from 'framework7-vue';
 import setLocale from '@/global/utils/setLocale';
 import routes from '@/app/routes';
 import appState from './appState';
 import LeftPanel from './app/LeftPanel.vue';
 import { useI18n } from 'vue-i18n';
+import { onMounted } from 'vue';
 const { t } = useI18n();
 const sidePanelState = useStore(appState, 'getSidePanelState');
 console.log(__APP_CONFIG__);
@@ -27,7 +28,10 @@ const f7params = {
   },
   darkTheme: true,
 }
-
+onMounted(() => {
+  f7.setDarkMode(true);
+  f7.setColorTheme("#e4262d");
+})
 </script>
 
 <template>
@@ -35,7 +39,7 @@ const f7params = {
     <f7-panel v-if="sidePanelState" left reveal dark :visible-breakpoint="1024">
       <LeftPanel />
     </f7-panel>
-    <f7-view main class="safe-areas" url="/" />
+    <f7-view main class="safe-areas" url="/" color-theme="red" />
   </f7-app>
 </template>
 

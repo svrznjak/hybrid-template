@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import appState from '@/appState';
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch, watchEffect } from 'vue';
 import ResourceEditSheet from '../components/ResourceEditSheet.vue';
 import messages from './HomePage.i18n.json';
 import { useI18n } from "vue-i18n";
@@ -38,8 +38,11 @@ onUnmounted(async () => {
   await unsubscribeFromCollection('/Companies/' + props.companyId + "/resourceTypes/" + props.resourceTypeId + "/resources");
 });
 
-const allFields = computed(() => {
-  if (currentResourceType.value && currentResourceType.value.data && currentResourceType.value.data.typeFields && currentResourceType.value.data.typeFields.length > 0) {
+let allFields = ref<any[]>([]);
+
+watchEffect(() => {
+  allFields.value = [];
+  if (currentResourceType.value?.data?.typeFields !== undefined) {
     const resourceTypeFields = currentResourceType.value.data.typeFields;
     const customFields = [];
     for (const field of resourceTypeFields) {
@@ -52,8 +55,7 @@ const allFields = computed(() => {
         showInList: field.showInList,
       });
     }
-    console.log(customFields)
-    return [{
+    allFields.value = [{
       id: "name",
       name: "Ime",
       rules: "required",
@@ -73,7 +75,6 @@ const allFields = computed(() => {
       value: true,
     }, ...customFields];
   }
-  return [];
 });
 
 const displayedCustomFields = computed(() => {
@@ -82,8 +83,6 @@ const displayedCustomFields = computed(() => {
 
 function generateCustomFieldsText(resource) {
   let text = "";
-  console.log(resource)
-  console.log(displayedCustomFields.value)
   displayedCustomFields.value.forEach(field => {
     if (resource[field.id] !== undefined) {
       if (field.type.input === 'checkbox') {

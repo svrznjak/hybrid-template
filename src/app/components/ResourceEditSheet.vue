@@ -29,7 +29,6 @@ const props = defineProps({
     required: true
   },
 })
-console.log(props.isOpen)
 const emit = defineEmits<{
   (e: 'close'): void
 }>()

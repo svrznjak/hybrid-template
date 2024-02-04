@@ -13,11 +13,18 @@ import ResourceTypesPageVue from './pages/ResourceTypesPage.vue';
 import ResourcesPageVue from './pages/ResourcesPage.vue';
 import ResourcePageVue from './pages/ResourcePage.vue';
 import ResourceTypeSettingsPageVue from './pages/ResourceTypeSettingsPage.vue';
+import ProjectPageVue from './pages/ProjectPage.vue';
 export default [
   {
     path: '/',
     name: 'home',
     component: HomePage,
+    beforeEnter: [requireAuth]
+  },
+  {
+    path: '/Companies/:companyId/projects/:projectId',
+    name: 'project',
+    component: ProjectPageVue,
     beforeEnter: [requireAuth]
   },
   {

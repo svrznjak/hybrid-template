@@ -8,6 +8,9 @@ const { t } = useI18n({
 import ResourceTypeEditSheet from '../components/ResourceTypeEditSheet.vue';
 import ResourceTypeEditNameSheet from '../components/ResourceTypeEditNameSheet.vue';
 import { unsubscribeFromDocument, useDocument } from '../store/useDocument';
+import { f7 } from 'framework7-vue';
+import _ from 'lodash';
+import { FirebaseFirestore } from '@capacitor-firebase/firestore';
 
 const props = defineProps({
   companyId: {
@@ -60,6 +63,98 @@ const nameAndDescription = computed(() => {
 const isEditOpen = ref(false);
 const editingFieldId = ref<undefined | string>(undefined);
 
+function moreOptionsPopup(typeFieldIndex: number) {
+  f7.dialog
+    .create({
+      title: 'Možnosti',
+      buttons: [
+        {
+          text: 'Uredi',
+          onClick: () => {
+            isEditOpen.value = true;
+            editingFieldId.value = typeFields.value[typeFieldIndex].id;
+          },
+        },
+        {
+          text: 'Premakni gor',
+          onClick: () => {
+            moveUp(typeFieldIndex);
+          },
+        },
+        {
+          text: 'Premakni dol',
+          onClick: () => {
+            moveDown(typeFieldIndex);
+          },
+        },
+        {
+          text: 'Izbriši',
+          color: 'yellow',
+          onClick: () => {
+            f7.dialog.confirm(
+              'Če želite obnoviti polje in podatke, ki so bili vneseni v to polje, boste morali ročno dodati novo polje z istim id-jem (' + typeFields.value[typeFieldIndex].id + ') in istimi nastavitvami.',
+              'Ali ste prepričani, da želite izbrisati to polje?',
+              () => {
+                deleteField(typeFieldIndex);
+              }
+            );
+          },
+        },
+        {
+          text: 'Prekliči',
+          close: true,
+          color: 'red',
+        }
+      ],
+      verticalButtons: true,
+    })
+    .open();
+}
+
+function moveUp(typeFieldIndex: number) {
+  const typeFields = _.clone(currentResourceType.value.data.typeFields);
+  if (typeFieldIndex > 0) {
+    const temp = typeFields[typeFieldIndex - 1];
+    typeFields[typeFieldIndex - 1] = typeFields[typeFieldIndex];
+    typeFields[typeFieldIndex] = temp;
+    currentResourceType.value.data.typeFields = typeFields;
+    saveTypeFields(typeFields);
+  }
+}
+function moveDown(typeFieldIndex: number) {
+  const typeFields = _.clone(currentResourceType.value.data.typeFields);
+  if (typeFieldIndex < typeFields.length - 1) {
+    const temp = typeFields[typeFieldIndex + 1];
+    typeFields[typeFieldIndex + 1] = typeFields[typeFieldIndex];
+    typeFields[typeFieldIndex] = temp;
+    currentResourceType.value.data.typeFields = typeFields;
+    saveTypeFields(typeFields);
+  }
+}
+
+function deleteField(typeFieldIndex: number) {
+  const typeFields = _.clone(currentResourceType.value.data.typeFields);
+  typeFields.splice(typeFieldIndex, 1);
+  currentResourceType.value.data.typeFields = typeFields;
+  saveTypeFields(typeFields);
+}
+
+async function saveTypeFields(typeFields: any) {
+  try {
+    f7.dialog.preloader(t('Shranjevanje'));
+    await FirebaseFirestore.updateDocument({
+      reference: '/Companies/' + props.companyId + '/resourceTypes/' + props.resourceTypeId,
+      data: {
+        typeFields: typeFields
+      }
+    });
+    f7.dialog.close();
+  } catch (e) {
+    f7.dialog.close();
+    f7.dialog.alert(t('Napaka'), t('Shranjevanje ni uspelo.'));
+    console.log(e)
+  }
+}
 
 </script>
 <template>
@@ -78,12 +173,11 @@ const editingFieldId = ref<undefined | string>(undefined);
       <p style=" margin-bottom: 20px">{{ currentResourceType.data ? currentResourceType.data.description : "" }}</p>
     </f7-block>
     <f7-list media-list v-if="typeFields !== undefined" inset dividers strong-ios outline class="fix-inset">
-      <f7-list-item v-for="typeField in typeFields" :key="typeField.id" :title="typeField.name">
+      <f7-list-item v-for="typeField, index in typeFields" :key="typeField.id" :title="typeField.name">
         <span style="font-size: 13px;">{{ t('Oblika polja') }}: {{ typeField.type }}</span><br />
         <span style="font-size: 13px;">{{ t('Zahteve') }}: {{ typeField.rules }}</span>
         <template #after>
-          <f7-button style="height: 20px;"
-            @click="() => { editingFieldId = typeField.id; isEditOpen = true }">Uredi</f7-button>
+          <f7-button style="height: 20px;" @click="moreOptionsPopup(index)">več</f7-button>
         </template>
       </f7-list-item>
     </f7-list>
