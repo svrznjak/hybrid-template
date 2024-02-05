@@ -7,9 +7,9 @@ const { t } = useI18n({
 });
 import { FirebaseFirestore } from '@capacitor-firebase/firestore';
 import { f7, } from 'framework7-vue';
-import { onMounted, onUnmounted, ref, watch } from 'vue';
-import { unsubscribeFromCollection, useCollection } from '../store/useCollection';
-import getParentReference from '../utils/getParentReference';
+import { ref, watch } from 'vue';
+import all from '@vee-validate/rules';
+import _ from 'lodash';
 appState.dispatch('setSidePanel', false);
 
 const props = defineProps({
@@ -28,24 +28,59 @@ const props = defineProps({
   resourceTypePath: {
     type: String,
   },
+  resourceType: {
+    type: Object,
+  },
 })
 
 const emit = defineEmits<{
   (e: 'close'): void
 }>()
 
-const allResources = ref();
+const allResourcesOfSelectedType = ref();
 
 watch(() => props.resourceTypePath, async (newValue, oldValue) => {
-  console.log(newValue + "/resources")
-  await unsubscribeFromCollection(oldValue + "/resources");
-  allResources.value = await useCollection(newValue + "/resources");
+  if (newValue === undefined) return
+
+  allResourcesOfSelectedType.value = (await FirebaseFirestore.getCollection({
+    reference: newValue + "/resources"
+  })).snapshots.map((snapshot) => {
+    return {
+      ...snapshot.data,
+      id: snapshot.id,
+    }
+  });
+
+  allResourcesOfSelectedType.value.forEach((resource, index) => {
+    FirebaseFirestore.getCollectionGroup({
+      reference: 'projects',
+      compositeFilter: {
+        type: 'and',
+        queryConstraints: [
+          {
+            type: 'where',
+            fieldPath: `selectedResources`,
+            opStr: 'array-contains',
+            value: newValue + "/resources/" + resource.id
+          },
+        ],
+      },
+    }).then((result) => {
+      result.snapshots.forEach((snapshot) => {
+        if (allResourcesOfSelectedType.value[index]._relatedProjects === undefined) allResourcesOfSelectedType.value[index]._relatedProjects = [];
+        allResourcesOfSelectedType.value[index]._relatedProjects.push({
+          ...snapshot.data,
+          id: snapshot.id,
+        });
+      })
+    });
+  });
 });
 
 
 async function addResource(documentId: string) {
   try {
-    f7.dialog.preloader(t('Ustvarjanje projekta'));
+    f7.dialog.preloader(t('Dodajanje vira'));
     await FirebaseFirestore.updateDocument({
       reference: props.projectDocumentPath,
       data: {
@@ -53,7 +88,6 @@ async function addResource(documentId: string) {
       }
     });
     f7.dialog.close();
-    emit('close');
   } catch (e) {
     f7.dialog.close();
     f7.dialog.alert(t('Napaka'), t('Shranjevanje ni uspelo.'));
@@ -61,21 +95,83 @@ async function addResource(documentId: string) {
   }
 };
 
+
+function generateCustomFieldsText(resource, resourceType) {
+  let text = "";
+  if (resourceType?.typeFields === undefined || !_.isArray(resourceType.typeFields)) return text;
+  const displayedCustomFields = resourceType.typeFields.filter(field => field.showInList);
+  displayedCustomFields.forEach(field => {
+    if (resource[field.id] !== undefined) {
+      if (field.type.input === 'checkbox') {
+        const options = [];
+        for (const option in resource[field.id]) {
+          if (resource[field.id][option]) options.push(option);
+        }
+        text += field.name + ": " + options.join(', ') + " | ";
+      } else if (field.type.input === 'toggle') {
+        text += field.name + ": " + (resource[field.id] ? t("Da") : t("Ne")) + " | ";
+      } else if (field.type.input.type === 'date') {
+        text += field.name + ": " + new Date(resource[field.id]).toLocaleDateString() + " | ";
+      }
+      else {
+        text += field.name + ": " + resource[field.id] + " | ";
+      }
+    } else {
+      text += field.name + ": " + t("///") + " | ";
+    }
+  });
+  return text
+}
+
+function generateUsedInProjectsText(resource) {
+  if (resource._relatedProjects === undefined || !_.isArray(resource._relatedProjects)) return '';
+  let text = `<div style='display: flex; flex-direction: row; gap:10px; flex-wrap: wrap;'>`;
+  resource._relatedProjects.forEach(project => {
+    if (project.status !== 'finished' && project.id !== props.projectInfo.id) {
+      if (project.status === 'draft') text += "<div class='chip chip-outline'><div class='chip-label '>";
+      else if (project.status === 'confirmed') text += "<div class='chip color-blue' ><div class='chip-label'>";
+      text += `${new Date(project.fromDate).toLocaleDateString()} - ${new Date(project.toDate).toLocaleDateString()} <b>(${project.name})</b> </div></div>`;
+    }
+  });
+  text += "</div>";
+  return text
+}
+
+
+function isResourceUsedInThisProject(resourceId: string): boolean {
+  console.log(props.projectInfo.selectedResources);
+  return props.projectInfo.selectedResources.some((selectedResource) => {
+    console.log(selectedResource);
+    return selectedResource === `${props.resourceTypePath}/resources/${resourceId}`
+  });
+
+}
+
 </script>
 <template>
   <f7-sheet :opened="isOpen && resourceTypePath !== undefined" backdrop :close-by-backdrop-click="false"
     :close-by-outside-click="false" style="height: 90%;">
     <f7-page-content>
-      <f7-block>
-        <h1>{{ t('Dodajanje virov') }}</h1>
-      </f7-block>
-      <f7-list dividers-ios strong-ios outline-ios>
-        <f7-list-item v-for="resource in allResources?.data" :key="resource.id" :title="resource.name"
-          :link="`#${resource.id}`" @click="addResource(resource.id)"></f7-list-item>
-        <f7-block style="display: flex; gap: 10px; justify-content: space-between;">
-          <f7-button fill round style="width: 150px;" @click="emit('close')">{{ t('Zaključi dodajanje') }}</f7-button>
+      <div>
+        <f7-block>
+          <h1>{{ t('Dodajanje virov') }}</h1>
         </f7-block>
-      </f7-list>
+
+        <f7-list media-list inset dividers strong-ios outline class="fix-inset" style="margin-top: 10px;">
+          <f7-list-item v-for="resource of allResourcesOfSelectedType" :key="resource.id" :title="resource.name">
+            <template #after v-if="!isResourceUsedInThisProject(resource.id)">
+              <f7-button style="height: 20px;" @click="addResource(resource.id)"><f7-icon f7="plus_circle_fill"
+                  size="20"></f7-icon></f7-button>
+            </template>
+            <p style="font-size:13px">{{ generateCustomFieldsText(resource, props.resourceType) }}</p>
+            <div v-html="generateUsedInProjectsText(resource)"></div>
+          </f7-list-item>
+        </f7-list>
+
+        <f7-block style="display: flex; gap: 10px; justify-content: space-between;">
+          <f7-button fill round @click="emit('close')">{{ t('Zaključi dodajanje') }}</f7-button>
+        </f7-block>
+      </div>
     </f7-page-content>
   </f7-sheet>
 </template>

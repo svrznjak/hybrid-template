@@ -29,7 +29,7 @@ const f7params = {
   darkTheme: true,
 }
 onMounted(() => {
-  f7.setDarkMode(true);
+  //f7.setDarkMode(true);
   f7.setColorTheme("#e4262d");
 })
 </script>
@@ -43,4 +43,4 @@ onMounted(() => {
   </f7-app>
 </template>
 
-<style scoped></style>
+<style></style>

@@ -62,28 +62,31 @@ const isOpenAddNew = ref(false);
     <f7-navbar>
       <f7-searchbar></f7-searchbar>
     </f7-navbar>
-    <f7-block style="display: flex; gap: 10px;  justify-content: space-between;">
-      <img :src="logo" height="40" />
-      <div style="display: flex; gap: 10px;">
-        <f7-button outline round style=" width: fit-content;"
-          @click="$router.navigate(companiesPaths[0] + '/resourceTypes')">{{
-            t('Viri')
+    <div>
+      <f7-block style="display: flex; gap: 10px;  justify-content: space-between;">
+        <img :src="logo" height="40" />
+        <div style="display: flex; gap: 10px;">
+          <f7-button outline round style=" width: fit-content;"
+            @click="$router.navigate(companiesPaths[0] + '/resourceTypes')">{{
+              t('Viri')
+            }}</f7-button>
+          <f7-button fill round style="width: fit-content;" @click="isOpenAddNew = true">{{ t('Nov projekt')
           }}</f7-button>
-        <f7-button fill round style="width: fit-content;" @click="isOpenAddNew = true">{{ t('Nov projekt') }}</f7-button>
-      </div>
-    </f7-block>
-    <f7-block-title>{{ t('Aktivni') }}</f7-block-title>
-    <f7-list media-list dividers strong-ios outline-ios v-if="projects">
-      <f7-list-item v-for="project in projects.data" :key="project.id"
-        :link="`${companiesPaths[0]}/projects/${project.id}`" :title="project.name" after="od junija do maja"
-        :subtitle="project.customer" text="10 zaposlenih | 2 avtomobila | 2 kartici">
-      </f7-list-item>
-    </f7-list>
-    <f7-block style="display: flex; gap: 10px;">
-      <f7-button fill round style="width: 100px;" @click="logOut()">Logout</f7-button>
-    </f7-block>
-    <ProjectAddSheet :collectionPath="companiesPaths[0] + '/projects'" :isOpen="isOpenAddNew"
-      @close="isOpenAddNew = false" />
+        </div>
+      </f7-block>
+      <f7-block-title>{{ t('Aktivni') }}</f7-block-title>
+      <f7-list media-list dividers strong-ios outline-ios v-if="projects">
+        <f7-list-item v-for="project in projects.data" :key="project.id"
+          :link="`${companiesPaths[0]}/projects/${project.id}`" :title="project.name" after="od junija do maja"
+          :subtitle="project.customer" text="10 zaposlenih | 2 avtomobila | 2 kartici">
+        </f7-list-item>
+      </f7-list>
+      <f7-block style="display: flex; gap: 10px;">
+        <f7-button fill round style="width: 100px;" @click="logOut()">Logout</f7-button>
+      </f7-block>
+      <ProjectAddSheet :collectionPath="companiesPaths[0] + '/projects'" :isOpen="isOpenAddNew"
+        @close="isOpenAddNew = false" />
+    </div>
   </f7-page>
 </template>
 <style>
@@ -91,5 +94,26 @@ const isOpenAddNew = ref(false);
 .md .list.fix-inset .item-inner {
   padding-right: 0px;
   margin-right: calc(var(--f7-list-item-padding-horizontal) + var(--f7-safe-area-right));
+}
+
+.text-editor.text-editor-resizable {
+  border-radius: var(--f7-list-inset-border-radius);
+}
+
+.text-editor.text-editor-resizable .text-editor-toolbar {
+  border-radius: var(--f7-list-inset-border-radius);
+  top: 10px;
+}
+
+.page-content:::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.page-content {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 </style>
