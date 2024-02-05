@@ -132,50 +132,52 @@ const saveResource = handleSubmit(async values => {
   <f7-sheet :opened="isOpen" backdrop :close-by-backdrop-click="false" :close-by-outside-click="false"
     style="height: 80%;">
     <f7-page-content>
-      <f7-block>
-        <h1>{{ t('Urejanje') }}</h1>
-      </f7-block>
-      <hr />
-      <f7-list form @submit="saveResource">
-        <FieldListInput :name="t('Id')" :disabled="props.editingFieldId !== undefined" :label="t('Id polja')" type="text"
-          outline inset:placeholder="t('Id polja (npr. stevilka-izkaznice)')" :field="id"
-          @input="id.value.value = $event.target.value" />
-        <FieldListInput :name="t('Ime')" :label="t('Ime polja')" type="text" outline inset
-          :placeholder="t('Ime polja npr. Številka izkaznice')" :field="name"
-          @input="name.value.value = $event.target.value" />
-        <FieldListInput :name="t('Oblika')" :label="t('Oblika polja')" type="select"
-          :disabled="props.editingFieldId !== undefined" outline inset :field="input"
-          @input="input.value.value = $event.target.value">
-          <option value="text">{{ t('Besedilo') }}</option>
-          <option value="textarea">{{ t('Večvrstično besedilo') }}</option>
-          <option value="number">{{ t('Številka') }}</option>
-          <option value="date">{{ t('Datum') }}</option>
-          <option value="select">{{ t('Izbira ene vrednosti') }}</option>
-          <option value="checkbox">{{ t('Izbira večih vrednosti') }}</option>
-          <option value="toggle">{{ t('Izbira "Da" ali "Ne"') }}</option>
-        </FieldListInput>
-        <FieldListInput v-if="input.value.value === 'select' || input.value.value === 'checkbox'" :name="t('Možnosti')"
-          :label="t('Možnosti polja')" type="text" outline inset
-          :placeholder="t('Možnosti polja vnesena s podpičjem. Npr. električar;mehanik;varilec')" :field="options"
-          @input="options.value.value = $event.target.value" />
-        <FieldListInput
-          v-if="input.value.value === 'text' || input.value.value === 'textbox' || input.value.value === 'number'"
-          :name="t('Pravila')" :label="t('Pravila polja')" type="text" outline inset
-          :placeholder="t('Pravila polja npr. `required|min:8`')" :field="rules"
-          @input="rules.value.value = $event.target.value" />
-        <f7-list-item style="margin-top:-15px; font-size:12px">
-          <a href="https://vee-validate.logaretm.com/v2/guide/rules.html">Navodila za pripravo pravil</a>
-        </f7-list-item>
-        <f7-list-item>
-          <span>{{ t('Prikaži v seznamih') }}</span>
-          <f7-toggle v-model:checked="showInList.value.value"></f7-toggle>
-        </f7-list-item>
-        <hr />
-        <f7-block style="display: flex; gap: 10px; justify-content: space-between;">
-          <f7-button round-md @click="close">{{ t('Prekliči') }}</f7-button>
-          <f7-button fill round style="width: 150px;" type="submit">{{ t('Shrani') }}</f7-button>
+      <div>
+        <f7-block>
+          <h1>{{ t('Urejanje') }}</h1>
         </f7-block>
-      </f7-list>
+        <hr />
+        <f7-list form @submit="saveResource">
+          <FieldListInput :name="t('Id')" :disabled="props.editingFieldId !== undefined" :label="t('Id polja')"
+            type="text" outline inset:placeholder="t('Id polja (npr. stevilka-izkaznice)')" :field="id"
+            @input="id.value.value = $event.target.value" />
+          <FieldListInput :name="t('Ime')" :label="t('Ime polja')" type="text" outline inset
+            :placeholder="t('Ime polja npr. Številka izkaznice')" :field="name"
+            @input="name.value.value = $event.target.value" />
+          <FieldListInput :name="t('Oblika')" :label="t('Oblika polja')" type="select"
+            :disabled="props.editingFieldId !== undefined" outline inset :field="input"
+            @input="input.value.value = $event.target.value">
+            <option value="text">{{ t('Besedilo') }}</option>
+            <option value="textarea">{{ t('Večvrstično besedilo') }}</option>
+            <option value="number">{{ t('Številka') }}</option>
+            <option value="date">{{ t('Datum') }}</option>
+            <option value="select">{{ t('Izbira ene vrednosti') }}</option>
+            <option value="checkbox">{{ t('Izbira večih vrednosti') }}</option>
+            <option value="toggle">{{ t('Izbira "Da" ali "Ne"') }}</option>
+          </FieldListInput>
+          <FieldListInput v-if="input.value.value === 'select' || input.value.value === 'checkbox'" :name="t('Možnosti')"
+            :label="t('Možnosti polja')" type="text" outline inset
+            :placeholder="t('Možnosti polja vnesena s podpičjem. Npr. električar;mehanik;varilec')" :field="options"
+            @input="options.value.value = $event.target.value" />
+          <FieldListInput
+            v-if="input.value.value === 'text' || input.value.value === 'textbox' || input.value.value === 'number'"
+            :name="t('Pravila')" :label="t('Pravila polja')" type="text" outline inset
+            :placeholder="t('Pravila polja npr. `required|min:8`')" :field="rules"
+            @input="rules.value.value = $event.target.value" />
+          <f7-list-item style="margin-top:-15px; font-size:12px">
+            <a href="https://vee-validate.logaretm.com/v2/guide/rules.html">Navodila za pripravo pravil</a>
+          </f7-list-item>
+          <f7-list-item>
+            <span>{{ t('Prikaži v seznamih') }}</span>
+            <f7-toggle v-model:checked="showInList.value.value"></f7-toggle>
+          </f7-list-item>
+          <hr />
+          <f7-block style="display: flex; gap: 10px; justify-content: space-between;">
+            <f7-button round-md @click="close">{{ t('Prekliči') }}</f7-button>
+            <f7-button fill round style="width: 150px;" type="submit">{{ t('Shrani') }}</f7-button>
+          </f7-block>
+        </f7-list>
+      </div>
     </f7-page-content>
   </f7-sheet>
 </template>

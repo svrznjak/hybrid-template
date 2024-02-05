@@ -8,7 +8,6 @@ const { t } = useI18n({
 import { FirebaseFirestore } from '@capacitor-firebase/firestore';
 import { f7, } from 'framework7-vue';
 import { ref, watch } from 'vue';
-import all from '@vee-validate/rules';
 import _ from 'lodash';
 appState.dispatch('setSidePanel', false);
 
@@ -49,6 +48,11 @@ watch(() => props.resourceTypePath, async (newValue, oldValue) => {
       ...snapshot.data,
       id: snapshot.id,
     }
+  });
+
+  // filter out inactive resources
+  allResourcesOfSelectedType.value = allResourcesOfSelectedType.value.filter((resource) => {
+    return resource.isActive;
   });
 
   allResourcesOfSelectedType.value.forEach((resource, index) => {
@@ -100,30 +104,32 @@ function generateCustomFieldsText(resource, resourceType) {
   let text = "";
   if (resourceType?.typeFields === undefined || !_.isArray(resourceType.typeFields)) return text;
   const displayedCustomFields = resourceType.typeFields.filter(field => field.showInList);
-  displayedCustomFields.forEach(field => {
+  displayedCustomFields.forEach((field, index) => {
+    if (index > 0) text += " | ";
     if (resource[field.id] !== undefined) {
       if (field.type.input === 'checkbox') {
         const options = [];
         for (const option in resource[field.id]) {
           if (resource[field.id][option]) options.push(option);
         }
-        text += field.name + ": " + options.join(', ') + " | ";
+        text += field.name + ": " + options.join(', ');
       } else if (field.type.input === 'toggle') {
-        text += field.name + ": " + (resource[field.id] ? t("Da") : t("Ne")) + " | ";
-      } else if (field.type.input.type === 'date') {
-        text += field.name + ": " + new Date(resource[field.id]).toLocaleDateString() + " | ";
+        text += field.name + ": " + (resource[field.id] ? t("Da") : t("Ne"));
+      } else if (field.type.input === 'date') {
+        text += field.name + ": " + new Date(resource[field.id]).toLocaleDateString();
       }
       else {
-        text += field.name + ": " + resource[field.id] + " | ";
+        text += field.name + ": " + resource[field.id];
       }
     } else {
-      text += field.name + ": " + t("///") + " | ";
+      text += field.name + ": " + t("///");
     }
   });
   return text
 }
 
 function generateUsedInProjectsText(resource) {
+  console.log(resource.isActive);
   if (resource._relatedProjects === undefined || !_.isArray(resource._relatedProjects)) return '';
   let text = `<div style='display: flex; flex-direction: row; gap:10px; flex-wrap: wrap;'>`;
   resource._relatedProjects.forEach(project => {

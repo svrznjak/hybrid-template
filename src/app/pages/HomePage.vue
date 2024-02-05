@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
 import appState from '@/appState';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import { theme } from 'framework7-vue';
 import messages from './HomePage.i18n.json';
 import { useI18n } from "vue-i18n";
 const { t } = useI18n({
@@ -45,6 +46,22 @@ onMounted(async () => {
 });
 
 
+const draftProjects = computed(() => {
+  if (projects?.value?.data === undefined) return [];
+  return projects.value.data.filter((project: any) => project.status === 'draft');
+})
+
+const confirmedProjects = computed(() => {
+  if (projects?.value?.data === undefined) return [];
+  return projects.value.data.filter((project: any) => project.status === 'confirmed');
+})
+
+const finishedProjects = computed(() => {
+  if (projects?.value?.data === undefined) return [];
+  return projects.value.data.filter((project: any) => project.status === 'finished');
+})
+
+
 async function logOut() {
   try {
     await FirebaseAuthentication.signOut();
@@ -74,15 +91,36 @@ const isOpenAddNew = ref(false);
           }}</f7-button>
         </div>
       </f7-block>
-      <f7-block-title>{{ t('Aktivni') }}</f7-block-title>
-      <f7-list media-list dividers strong-ios outline-ios v-if="projects">
-        <f7-list-item v-for="project in projects.data" :key="project.id"
-          :link="`${companiesPaths[0]}/projects/${project.id}`" :title="project.name" after="od junija do maja"
-          :subtitle="project.customer" text="10 zaposlenih | 2 avtomobila | 2 kartici">
+      <hr />
+      <f7-block-title>{{ t('Osnutki projektov') }}</f7-block-title>
+      <f7-list media-list dividers :inset="theme.md" strong-ios outline v-if="projects" class="fix-inset">
+        <f7-list-item v-for="project in draftProjects" :key="project.id"
+          :link="`${companiesPaths[0]}/projects/${project.id}`" :title="project.name" :subtitle="project.customerName">
+          <div style="font-size:14px">{{ new Date(project.fromDate).toLocaleDateString() + ' - ' + new
+            Date(project.toDate).toLocaleDateString() +
+            '&nbsp;&nbsp;' }}</div>
+        </f7-list-item>
+      </f7-list>
+      <f7-block-title>{{ t('Potrjeni projekti') }}</f7-block-title>
+      <f7-list media-list dividers :inset="theme.md" strong-ios outline v-if="projects" class="fix-inset">
+        <f7-list-item v-for="project in confirmedProjects" :key="project.id"
+          :link="`${companiesPaths[0]}/projects/${project.id}`" :title="project.name" :subtitle="project.customerName">
+          <div style="font-size:14px">{{ new Date(project.fromDate).toLocaleDateString() + ' - ' + new
+            Date(project.toDate).toLocaleDateString() +
+            '&nbsp;&nbsp;' }}</div>
+        </f7-list-item>
+      </f7-list>
+      <f7-block-title>{{ t('Zaključeni projekti') }}</f7-block-title>
+      <f7-list media-list dividers :inset="theme.md" strong-ios outline v-if="projects" class="fix-inset">
+        <f7-list-item v-for="project in finishedProjects" :key="project.id"
+          :link="`${companiesPaths[0]}/projects/${project.id}`" :title="project.name" :subtitle="project.customerName">
+          <div style="font-size:14px">{{ new Date(project.fromDate).toLocaleDateString() + ' - ' + new
+            Date(project.toDate).toLocaleDateString() +
+            '&nbsp;&nbsp;' }}</div>
         </f7-list-item>
       </f7-list>
       <f7-block style="display: flex; gap: 10px;">
-        <f7-button fill round style="width: 100px;" @click="logOut()">Logout</f7-button>
+        <!--<f7-button fill round style="width: 100px;" @click="logOut()">Logout</f7-button>-->
       </f7-block>
       <ProjectAddSheet :collectionPath="companiesPaths[0] + '/projects'" :isOpen="isOpenAddNew"
         @close="isOpenAddNew = false" />

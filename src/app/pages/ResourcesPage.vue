@@ -83,24 +83,25 @@ const displayedCustomFields = computed(() => {
 
 function generateCustomFieldsText(resource) {
   let text = "";
-  displayedCustomFields.value.forEach(field => {
+  displayedCustomFields.value.forEach((field, index) => {
+    if (index > 0) text += " | ";
     if (resource[field.id] !== undefined) {
       if (field.type.input === 'checkbox') {
         const options = [];
         for (const option in resource[field.id]) {
           if (resource[field.id][option]) options.push(option);
         }
-        text += field.name + ": " + options.join(', ') + " | ";
+        text += field.name + ": " + options.join(', ');
       } else if (field.type.input === 'toggle') {
-        text += field.name + ": " + (resource[field.id] ? t("Da") : t("Ne")) + " | ";
-      } else if (field.type.input.type === 'date') {
-        text += field.name + ": " + new Date(resource[field.id]).toLocaleDateString() + " | ";
+        text += field.name + ": " + (resource[field.id] ? t("Da") : t("Ne"));
+      } else if (field.type.input === 'date') {
+        text += field.name + ": " + new Date(resource[field.id]).toLocaleDateString();
       }
       else {
-        text += field.name + ": " + resource[field.id] + " | ";
+        text += field.name + ": " + resource[field.id];
       }
     } else {
-      text += field.name + ": " + t("///") + " | ";
+      text += field.name + ": " + t("///");
     }
   });
   return text
@@ -113,25 +114,27 @@ const isAddMode = ref(false);
   <f7-page name="resources">
     <f7-navbar back-link :title="t('Nazaj na vrste virov')">
     </f7-navbar>
-    <f7-block style="display: flex; gap: 10px;  justify-content: space-between; flex-wrap: wrap;"
-      v-if="currentResourceType">
-      <h1 style="margin-bottom: 0px">{{ currentResourceType.data ? currentResourceType.data.name : "" }} <f7-chip
-          v-if="currentResourceType.data !== undefined && !currentResourceType.data.isActive">{{ t('Ni aktiven')
-          }}</f7-chip></h1>
-      <div style="display: flex; gap: 10px;">
-        <f7-button outline round style="width: fit-content;"
-          @click="$router.navigate('/Companies/' + props.companyId + '/resourceTypes/' + props.resourceTypeId + '/settings/')"><f7-icon
-            f7="gear" size="25"></f7-icon></f7-button>
-        <f7-button fill round style="width: fit-content;" @click="isAddMode = true">{{ t('Dodaj')
-        }}</f7-button>
-      </div>
-    </f7-block>
-    <f7-list media-list dividers strong-ios outline-ios v-if="resources">
-      <f7-list-item v-for="resource in resources.data" :key="resource.id" :link="`${resource.id}`" :title="resource.name"
-        :badge="!resource.isActive ? t('Ni aktiven') : undefined">
-        <span style="font-size:13px">{{ generateCustomFieldsText(resource) }}</span>
-      </f7-list-item>
-    </f7-list>
+    <div>
+      <f7-block style="display: flex; gap: 10px;  justify-content: space-between; flex-wrap: wrap;"
+        v-if="currentResourceType">
+        <h1 style="margin-bottom: 0px">{{ currentResourceType.data ? currentResourceType.data.name : "" }} <f7-chip
+            v-if="currentResourceType.data !== undefined && !currentResourceType.data.isActive">{{ t('Ni aktiven')
+            }}</f7-chip></h1>
+        <div style="display: flex; gap: 10px;">
+          <f7-button outline round style="width: fit-content;"
+            @click="$router.navigate('/Companies/' + props.companyId + '/resourceTypes/' + props.resourceTypeId + '/settings/')"><f7-icon
+              f7="gear" size="25"></f7-icon></f7-button>
+          <f7-button fill round style="width: fit-content;" @click="isAddMode = true">{{ t('Dodaj')
+          }}</f7-button>
+        </div>
+      </f7-block>
+      <f7-list media-list dividers strong-ios outline-ios class="fix-inset" v-if="resources">
+        <f7-list-item v-for="resource in resources.data" :key="resource.id" :link="`${resource.id}`"
+          :title="resource.name" :badge="!resource.isActive ? t('Ni aktiven') : undefined">
+          <span style="font-size:13px">{{ generateCustomFieldsText(resource) }}</span>
+        </f7-list-item>
+      </f7-list>
+    </div>
     <ResourceEditSheet v-if="allFields.length > 0"
       :collectionPath="'/Companies/' + props.companyId + '/resourceTypes/' + props.resourceTypeId + '/resources/'"
       :fields="allFields" :isOpen="isAddMode" @close="isAddMode = false" />

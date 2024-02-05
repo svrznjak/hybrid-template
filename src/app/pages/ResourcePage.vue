@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import appState from '@/appState';
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import _ from 'lodash';
 import ResourceEditSheet from '../components/ResourceEditSheet.vue';
 import messages from './HomePage.i18n.json';
 import { useI18n } from "vue-i18n";
@@ -8,6 +9,7 @@ const { t } = useI18n({
   messages
 });
 import { unsubscribeFromDocument, useDocument } from '../store/useDocument';
+import { FirebaseFirestore } from '@capacitor-firebase/firestore';
 appState.dispatch('setSidePanel', false);
 
 const props = defineProps({
@@ -75,6 +77,33 @@ const allFields = computed(() => {
 
 });
 
+const relatedProjects = ref<any>([]);
+
+watch(() => resource?.value?.data, async (newValue) => {
+  if (newValue?.id !== undefined) {
+    const result = await FirebaseFirestore.getCollectionGroup({
+      reference: 'projects',
+      compositeFilter: {
+        type: 'and',
+        queryConstraints: [
+          {
+            type: 'where',
+            fieldPath: `selectedResources`,
+            opStr: 'array-contains',
+            value: '/Companies/' + props.companyId + "/resourceTypes/" + props.resourceTypeId + "/resources/" + newValue.id
+          },
+        ],
+      },
+    });
+    relatedProjects.value = result.snapshots.map((snapshot) => {
+      return {
+        ...snapshot.data,
+        id: snapshot.id,
+      }
+    });
+  }
+});
+
 
 onMounted(async () => {
   currentResourceType.value = await useDocument('/Companies/' + props.companyId + "/resourceTypes/" + props.resourceTypeId)
@@ -108,6 +137,19 @@ function generateTitleText(title: any) {
   return "";
 }
 
+function generateBadgeText(status: string): string {
+  if (status === "draft") return t("Osnutek");
+  else if (status === "confirmed") return t("Potrjen");
+  else if (status === "finished") return t("Zaključen");
+  else return '';
+}
+function generateBadgeColor(status: string): string {
+  if (status === "draft") return '';
+  else if (status === "confirmed") return 'blue';
+  else if (status === "finished") return 'green';
+  else return '';
+}
+
 
 </script>
 <template>
@@ -118,17 +160,29 @@ function generateTitleText(title: any) {
         <f7-badge v-if="!currentResourceType?.data?.isActive">{{ t('Vrsta vira ni aktivna') }}</f7-badge>
       </f7-nav-left>
     </f7-navbar>
-    <f7-block style="display: flex; gap: 10px;  justify-content: space-between; flex-wrap: wrap;" v-if="resource">
-      <h1 style="margin-bottom: 0px">{{ resource.data ? resource.data.name : "" }} <f7-chip
-          v-if="!resource?.data?.isActive">{{ t('Ni aktiven') }}</f7-chip></h1>
-      <f7-button fill round style="width: fit-content;" @click="openEditMode"><f7-icon f7="pencil"
-          size="25"></f7-icon></f7-button>
-    </f7-block>
-    <f7-list inset dividers strong-ios outline class="fix-inset">
-      <f7-list-item v-for="field of customFields" :key="field.id" :title="generateTitleText(field.value)"
-        :after="field.name">
-      </f7-list-item>
-    </f7-list>
+    <div>
+      <f7-block style="display: flex; gap: 10px;  justify-content: space-between; flex-wrap: wrap;" v-if="resource">
+        <h1 style="margin-bottom: 0px">{{ resource.data ? resource.data.name : "" }} <f7-chip
+            v-if="!resource?.data?.isActive">{{ t('Ni aktiven') }}</f7-chip></h1>
+        <f7-button fill round style="width: fit-content;" @click="openEditMode"><f7-icon f7="pencil"
+            size="25"></f7-icon></f7-button>
+      </f7-block>
+      <f7-list inset dividers strong-ios outline class="fix-inset">
+        <f7-list-item v-for="field of customFields" :key="field.id" :title="generateTitleText(field.value)"
+          :after="field.name">
+        </f7-list-item>
+      </f7-list>
+      <f7-block-title>{{ t('Povezani projekti') }}</f7-block-title>
+      <f7-list media-list dividers strong-ios outline-ios class="fix-inset" v-if="_.isArray(relatedProjects)">
+        <f7-list-item v-for="project of relatedProjects" :key="project.id" :title="project.name"
+          :link="`/Companies/${props.companyId}/projects/${project.id}`" :subtitle="project.customerName"
+          :badge="generateBadgeText(project.status)" :badge-color="generateBadgeColor(project.status)">
+          <div style="font-size:14px">{{ new Date(project.fromDate).toLocaleDateString() + ' - ' + new
+            Date(project.toDate).toLocaleDateString() +
+            '&nbsp;&nbsp;' }}</div>
+        </f7-list-item>
+      </f7-list>
+    </div>
     <ResourceEditSheet v-if="allFields.length > 0"
       :documentPath="'/Companies/' + props.companyId + '/resourceTypes/' + props.resourceTypeId + '/resources/' + props.resourceId"
       :fields="allFields" :isOpen="isEditMode" @close="closeEditMode" />

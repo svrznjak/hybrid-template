@@ -161,29 +161,31 @@ async function saveTypeFields(typeFields: any) {
   <f7-page name="resourcesTypeSettings">
     <f7-navbar back-link :title="t('Nazaj na vire')">
     </f7-navbar>
-    <f7-block v-if="currentResourceType" inset outline strong-ios>
-      <div style="display: flex; justify-content: space-between; flex-wrap: wrap-reverse;">
-        <h1 style="margin-bottom: 0px; ">{{ currentResourceType.data ?
-          currentResourceType.data.name : "" }} <f7-chip
-            v-if="currentResourceType.data !== undefined && !currentResourceType.data.isActive">{{ t('Ni aktiven')
-            }}</f7-chip>
-        </h1>
-        <f7-button @click="isOpenNameEdit = true" style="width:fit-content;"><f7-icon f7="pencil"></f7-icon></f7-button>
-      </div>
-      <p style=" margin-bottom: 20px">{{ currentResourceType.data ? currentResourceType.data.description : "" }}</p>
-    </f7-block>
-    <f7-list media-list v-if="typeFields !== undefined" inset dividers strong-ios outline class="fix-inset">
-      <f7-list-item v-for="typeField, index in typeFields" :key="typeField.id" :title="typeField.name">
-        <span style="font-size: 13px;">{{ t('Oblika polja') }}: {{ typeField.type }}</span><br />
-        <span style="font-size: 13px;">{{ t('Zahteve') }}: {{ typeField.rules }}</span>
-        <template #after>
-          <f7-button style="height: 20px;" @click="moreOptionsPopup(index)">več</f7-button>
-        </template>
-      </f7-list-item>
-    </f7-list>
-    <f7-block>
-      <f7-button fill round-md @click="isEditOpen = true">{{ t('Dodaj polje') }}</f7-button>
-    </f7-block>
+    <div>
+      <f7-block v-if="currentResourceType" inset outline strong-ios>
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap-reverse;">
+          <h1 style="margin-bottom: 0px; ">{{ currentResourceType.data ?
+            currentResourceType.data.name : "" }} <f7-chip
+              v-if="currentResourceType.data !== undefined && !currentResourceType.data.isActive">{{ t('Ni aktiven')
+              }}</f7-chip>
+          </h1>
+          <f7-button @click="isOpenNameEdit = true" style="width:fit-content;"><f7-icon f7="pencil"></f7-icon></f7-button>
+        </div>
+        <p style=" margin-bottom: 20px">{{ currentResourceType.data ? currentResourceType.data.description : "" }}</p>
+      </f7-block>
+      <f7-list media-list v-if="typeFields !== undefined" inset dividers strong-ios outline class="fix-inset">
+        <f7-list-item v-for="typeField, index in typeFields" :key="typeField.id" :title="typeField.name">
+          <span style="font-size: 13px;">{{ t('Oblika polja') }}: {{ typeField.type }}</span><br />
+          <span style="font-size: 13px;">{{ t('Zahteve') }}: {{ typeField.rules }}</span>
+          <template #after>
+            <f7-button style="height: 20px;" @click="moreOptionsPopup(index)">več</f7-button>
+          </template>
+        </f7-list-item>
+      </f7-list>
+      <f7-block>
+        <f7-button fill round-md @click="isEditOpen = true">{{ t('Dodaj polje') }}</f7-button>
+      </f7-block>
+    </div>
     <ResourceTypeEditNameSheet v-if="nameAndDescription !== undefined"
       :documentPath="'/Companies/' + props.companyId + '/resourceTypes/' + props.resourceTypeId"
       :fields="nameAndDescription" :isOpen="isOpenNameEdit" @close="isOpenNameEdit = false" />

@@ -17,7 +17,14 @@ export async function useCollection(path: string) {
   if (activeCollections[path].callbackId === undefined) {
     activeCollections[path].callbackId = await FirebaseFirestore.addCollectionSnapshotListener(
       {
-        reference: path
+        reference: path,
+        queryConstraints: [
+          {
+            type: 'orderBy',
+            fieldPath: 'name',
+            directionStr: 'asc'
+          }
+        ]
       },
       (event: any, error: any) => {
         if (error) {

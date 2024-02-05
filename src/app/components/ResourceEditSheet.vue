@@ -115,37 +115,39 @@ function getFieldById(id: string) {
   <f7-sheet :opened="isOpen" backdrop :close-by-backdrop-click="false" :close-by-outside-click="false"
     style="height: 90%;">
     <f7-page-content>
-      <f7-block style="display: flex; gap: 10px; justify-content: space-between;">
-        <h1 style="margin-bottom: 0;">{{ t('Urejanje') }}</h1>
-        <f7-toggle color="green" v-model:checked="isActive"></f7-toggle>
-      </f7-block>
-      <hr />
-      <f7-list form dividers @submit="saveResource">
-        <template v-for="field, index of inputFields" :key="field.id">
-          <FieldListInput
-            v-if="getFieldById(index)?.type.input !== 'checkbox' && getFieldById(index)?.type.input !== 'toggle'"
-            :type="getFieldById(index)?.type.input || 'text'" :label="getFieldById(index)?.name || ''" :field="field"
-            @input="field.value.value = $event.target.value" outline clear-button>
-            <option v-if="getFieldById(index)?.type.input === 'select'"
-              v-for="option of getFieldById(index)?.type.options.split(';') || []" :key="option" :value="option">{{
-                option }}</option>
-          </FieldListInput>
-          <f7-list v-if="getFieldById(index)?.type.input === 'checkbox'" outline inset
-            style="margin-bottom:10px; margin-top: 10px">
-            <f7-list-item style="margin-left: -30px" checkbox v-model:checked="field[option]"
-              v-for="option, i of getFieldById(index)?.type.options.split(';') || []" :title="option"></f7-list-item>
-          </f7-list>
-          <f7-list-item v-if="getFieldById(index)?.type.input === 'toggle'" outline inset>
-            <span>{{ getFieldById(index)?.name }}</span>
-            <f7-toggle v-model:checked="field.value.value"></f7-toggle>
-          </f7-list-item>
-        </template>
-        <hr />
+      <div>
         <f7-block style="display: flex; gap: 10px; justify-content: space-between;">
-          <f7-button round-md @click="$emit('close')">{{ t('Prekliči') }}</f7-button>
-          <f7-button fill round style="width: 150px;" type="submit">{{ t('Shrani') }}</f7-button>
+          <h1 style="margin-bottom: 0;">{{ t('Urejanje') }}</h1>
+          <f7-toggle color="green" v-model:checked="isActive"></f7-toggle>
         </f7-block>
-      </f7-list>
+        <hr />
+        <f7-list form dividers @submit="saveResource">
+          <template v-for="field, index of inputFields" :key="field.id">
+            <FieldListInput
+              v-if="getFieldById(index)?.type.input !== 'checkbox' && getFieldById(index)?.type.input !== 'toggle'"
+              :type="getFieldById(index)?.type.input || 'text'" :label="getFieldById(index)?.name || ''" :field="field"
+              @input="field.value.value = $event.target.value" outline clear-button>
+              <option v-if="getFieldById(index)?.type.input === 'select'"
+                v-for="option of getFieldById(index)?.type.options.split(';') || []" :key="option" :value="option">{{
+                  option }}</option>
+            </FieldListInput>
+            <f7-list v-if="getFieldById(index)?.type.input === 'checkbox'" outline inset
+              style="margin-bottom:10px; margin-top: 10px">
+              <f7-list-item style="margin-left: -30px" checkbox v-model:checked="field[option]"
+                v-for="option, i of getFieldById(index)?.type.options.split(';') || []" :title="option"></f7-list-item>
+            </f7-list>
+            <f7-list-item v-if="getFieldById(index)?.type.input === 'toggle'" outline inset>
+              <span>{{ getFieldById(index)?.name }}</span>
+              <f7-toggle v-model:checked="field.value.value"></f7-toggle>
+            </f7-list-item>
+          </template>
+          <hr />
+          <f7-block style="display: flex; gap: 10px; justify-content: space-between;">
+            <f7-button round-md @click="$emit('close')">{{ t('Prekliči') }}</f7-button>
+            <f7-button fill round style="width: 150px;" type="submit">{{ t('Shrani') }}</f7-button>
+          </f7-block>
+        </f7-list>
+      </div>
     </f7-page-content>
   </f7-sheet>
 </template>

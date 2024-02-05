@@ -59,8 +59,7 @@ async function saveEditorChanges() {
 }
 
 watchEffect(() => {
-  if (currentProject?.value?.data === undefined) return;
-  if (currentProject?.value?.data?.description) {
+  if (currentProject?.value?.data?.description !== undefined) {
     editor.currentValue = currentProject.value.data.description;
   }
 });
@@ -242,28 +241,27 @@ async function finishProject() {
 
 function generateCustomFieldsText(resource, resourceType) {
   let text = "";
-  console.log(resourceType?.typeFields)
   if (resourceType?.typeFields === undefined || !_.isArray(resourceType.typeFields)) return text;
   const displayedCustomFields = resourceType.typeFields.filter(field => field.showInList);
-  console.log(displayedCustomFields)
-  displayedCustomFields.forEach(field => {
+  displayedCustomFields.forEach((field, index) => {
+    if (index > 0) text += " | ";
     if (resource[field.id] !== undefined) {
       if (field.type.input === 'checkbox') {
         const options = [];
         for (const option in resource[field.id]) {
           if (resource[field.id][option]) options.push(option);
         }
-        text += field.name + ": " + options.join(', ') + " | ";
+        text += field.name + ": " + options.join(', ');
       } else if (field.type.input === 'toggle') {
-        text += field.name + ": " + (resource[field.id] ? t("Da") : t("Ne")) + " | ";
-      } else if (field.type.input.type === 'date') {
-        text += field.name + ": " + new Date(resource[field.id]).toLocaleDateString() + " | ";
+        text += field.name + ": " + (resource[field.id] ? t("Da") : t("Ne"));
+      } else if (field.type.input === 'date') {
+        text += field.name + ": " + new Date(resource[field.id]).toLocaleDateString();
       }
       else {
-        text += field.name + ": " + resource[field.id] + " | ";
+        text += field.name + ": " + resource[field.id];
       }
     } else {
-      text += field.name + ": " + t("///") + " | ";
+      text += field.name + ": " + t("///");
     }
   });
   return text
