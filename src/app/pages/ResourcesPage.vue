@@ -44,7 +44,7 @@ watchEffect(() => {
   allFields.value = [];
   if (currentResourceType.value?.data?.typeFields !== undefined) {
     const resourceTypeFields = currentResourceType.value.data.typeFields;
-    const customFields = [];
+    const customFields: any = [];
     for (const field of resourceTypeFields) {
       customFields.push({
         id: field.id,
@@ -87,7 +87,7 @@ function generateCustomFieldsText(resource) {
     if (index > 0) text += " | ";
     if (resource[field.id] !== undefined) {
       if (field.type.input === 'checkbox') {
-        const options = [];
+        const options: any = [];
         for (const option in resource[field.id]) {
           if (resource[field.id][option]) options.push(option);
         }

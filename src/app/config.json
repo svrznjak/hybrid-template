@@ -1,10 +1,10 @@
 {
-  "APP_ID": "my-app.example.com",
-  "APP_NAME": "My App",
-  "APP_TITLE": "My App title",
+  "APP_ID": "egm.svrznjak.com",
+  "APP_NAME": "EGM",
+  "APP_TITLE": "EGM",
   "VERSION": "0.0.1",
   "BUILD_NUMBER": 1,
-  "META_DESCRIPTION": "My App description",
+  "META_DESCRIPTION": "EGM aplikacija za vodenje virov",
   "COLORS": {
     "SAFARI_PINNED_TAB_COLOR": "#000000",
     "THEME_COLOR": "#000000"

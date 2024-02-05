@@ -10,7 +10,6 @@ import { useField, useForm } from 'vee-validate';
 import FieldListInput from '@/global/components/FieldListInput.vue';
 import { FirebaseFirestore } from '@capacitor-firebase/firestore';
 import { f7 } from 'framework7-vue';
-import _ from 'lodash';
 appState.dispatch('setSidePanel', false);
 
 const props = defineProps({
@@ -33,11 +32,10 @@ const emit = defineEmits<{
   (e: 'close'): void
 }>()
 
-const initialValues = {};
+const initialValues: any = {};
 
-props.fields.forEach(field => {
+props.fields.forEach((field: any) => {
   if (field.type.input === 'checkbox') {
-    console.log(field.value)
     initialValues[field.id] = field.value || {};
   }
   else
@@ -50,18 +48,17 @@ const { handleSubmit } = useForm({
 });
 const inputFields: any = {};
 
-console.log(props.fields)
 
-const arrayOfCheckboxes = [];
+const arrayOfCheckboxes: any = [];
 
-for (const field of props.fields) {
-  if (field.id === 'isActive') continue;
+props.fields.forEach((field: any) => {
+  if (field.id === 'isActive') return;
   if (field.type.input === 'checkbox') {
     arrayOfCheckboxes.push(field.id);
     inputFields[field.id] = reactive({
     });
 
-    field.type.options.split(';').forEach(option => {
+    field.type.options.split(';').forEach((option: any) => {
       inputFields[field.id][option] = false;
     });
 
@@ -71,10 +68,8 @@ for (const field of props.fields) {
   } else {
     inputFields[field.id] = useField(field.id, field.rules, { validateOnValueUpdate: false, label: field.name });
   }
-}
-console.log(inputFields)
+});
 
-console.log(getFieldById('isActive'))
 
 const isActive = ref(getFieldById('isActive')?.value);
 
@@ -82,7 +77,7 @@ const saveResource = handleSubmit(async values => {
   try {
     f7.dialog.preloader(t('Shranjevanje'));
     // add checkboxes to values
-    arrayOfCheckboxes.forEach(checkboxKey => {
+    arrayOfCheckboxes.forEach((checkboxKey: any) => {
       values[checkboxKey] = inputFields[checkboxKey];
     })
 
@@ -106,8 +101,8 @@ const saveResource = handleSubmit(async values => {
   }
 });
 
-function getFieldById(id: string) {
-  return props.fields.find(field => field.id == id.toString());
+function getFieldById(id: string | number): any {
+  return props.fields.find((field: any) => field.id == id.toString());
 }
 
 </script>

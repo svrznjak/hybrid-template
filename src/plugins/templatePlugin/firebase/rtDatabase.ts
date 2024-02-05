@@ -1,5 +1,5 @@
-import { FirebaseApp } from "firebase/app";
-import { getDatabase, Database } from "firebase/database";
+import type { FirebaseApp } from 'firebase/app';
+import { getDatabase, Database } from 'firebase/database';
 
 let rtDatabase: Database | undefined = undefined;
 
@@ -10,5 +10,5 @@ export default {
   },
   getDatabase(): Database | undefined {
     return rtDatabase;
-  },
+  }
 };

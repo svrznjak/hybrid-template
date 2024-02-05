@@ -239,15 +239,15 @@ async function finishProject() {
   }
 }
 
-function generateCustomFieldsText(resource, resourceType) {
+function generateCustomFieldsText(resource: any, resourceType: any) {
   let text = "";
   if (resourceType?.typeFields === undefined || !_.isArray(resourceType.typeFields)) return text;
-  const displayedCustomFields = resourceType.typeFields.filter(field => field.showInList);
-  displayedCustomFields.forEach((field, index) => {
+  const displayedCustomFields = resourceType.typeFields.filter((field: any) => field.showInList);
+  displayedCustomFields.forEach((field: any, index: any) => {
     if (index > 0) text += " | ";
     if (resource[field.id] !== undefined) {
       if (field.type.input === 'checkbox') {
-        const options = [];
+        const options: any = [];
         for (const option in resource[field.id]) {
           if (resource[field.id][option]) options.push(option);
         }
@@ -267,10 +267,10 @@ function generateCustomFieldsText(resource, resourceType) {
   return text
 }
 
-function generateUsedInProjectsText(resource) {
+function generateUsedInProjectsText(resource: any) {
   if (resource._relatedProjects === undefined || !_.isArray(resource._relatedProjects)) return '';
   let text = `<div style='display: flex; flex-direction: row; gap:10px; flex-wrap: wrap;'>`;
-  resource._relatedProjects.forEach((project) => {
+  resource._relatedProjects.forEach((project: any) => {
     if (project.status !== 'finished' && project.id !== props.projectId) {
       if (project.status === 'draft') { text += "<div class='chip chip-outline'><div class='chip-label '>"; }
       else if (project.status === 'confirmed') { text += "<div class='chip color-blue' ><div class='chip-label'>"; }
@@ -322,11 +322,12 @@ const selectResourcesPath = ref<string | undefined>(undefined);
           <f7-block style="margin-top: 10px; margin-bottom: 0px;">
             <div style="display: flex; flex-direction: row; justify-content: space-between; flex-wrap: wrap; ">
               <h2 large color="black" style="margin-top: 5px; margin-bottom: 5px;">{{
-                resourceTypes.data.find((type) => `/Companies/${props.companyId}/resourceTypes/${type.id}` == key)?.name
+                resourceTypes.data.find((type: any) => `/Companies/${props.companyId}/resourceTypes/${type.id}` ==
+                  String(key))?.name
               }}
               </h2>
               <f7-button v-if="currentProject?.data?.status !== 'finished'" style="width: fit-content;"
-                @click="selectResourcesPath = key"><f7-icon f7="plus" size="25"></f7-icon>
+                @click="selectResourcesPath = String(key)"><f7-icon f7="plus" size="25"></f7-icon>
               </f7-button>
             </div>
           </f7-block>
@@ -338,8 +339,8 @@ const selectResourcesPath = ref<string | undefined>(undefined);
                 })"><f7-icon f7="equal_square
 " size="15"></f7-icon></f7-button>
               </template>
-              <p style="font-size:13px">{{ generateCustomFieldsText(resource, resourceTypes.data.find((type) =>
-                `/Companies/${props.companyId}/resourceTypes/${type.id}` == key)) }}</p>
+              <p style="font-size:13px">{{ generateCustomFieldsText(resource, resourceTypes.data.find((type: any) =>
+                `/Companies/${props.companyId}/resourceTypes/${type.id}` == String(key))) }}</p>
               <div v-html="generateUsedInProjectsText(resource)"></div>
             </f7-list-item>
           </f7-list>
@@ -365,7 +366,7 @@ const selectResourcesPath = ref<string | undefined>(undefined);
     <ProjectResourceSelectorSheet
       v-if="currentProject?.data !== undefined && resourceTypes?.data !== undefined && currentProject?.data?.status !== 'finished'"
       :projectDocumentPath="'/Companies/' + props.companyId + '/projects/' + props.projectId"
-      :projectInfo="currentProject.data" :resourceTypePath="selectResourcesPath" :resourceType="resourceTypes.data.find((type) =>
+      :projectInfo="currentProject.data" :resourceTypePath="selectResourcesPath" :resourceType="resourceTypes.data.find((type: any) =>
         `/Companies/${props.companyId}/resourceTypes/${type.id}` == selectResourcesPath)"
       :isOpen="selectResourcesPath !== undefined" @close="selectResourcesPath = undefined" />
   </f7-page>

@@ -51,7 +51,7 @@ watch(() => props.resourceTypePath, async (newValue, oldValue) => {
   });
 
   // filter out inactive resources
-  allResourcesOfSelectedType.value = allResourcesOfSelectedType.value.filter((resource) => {
+  allResourcesOfSelectedType.value = allResourcesOfSelectedType.value.filter((resource: any) => {
     return resource.isActive;
   });
 
@@ -108,7 +108,7 @@ function generateCustomFieldsText(resource, resourceType) {
     if (index > 0) text += " | ";
     if (resource[field.id] !== undefined) {
       if (field.type.input === 'checkbox') {
-        const options = [];
+        const options: any = [];
         for (const option in resource[field.id]) {
           if (resource[field.id][option]) options.push(option);
         }

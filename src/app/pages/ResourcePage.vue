@@ -33,10 +33,10 @@ const resource = ref();
 
 const isEditMode = ref(false);
 
-const customFields = computed(() => {
+const customFields: any = computed(() => {
   if (currentResourceType.value && currentResourceType.value.data && resource.value && resource.value.data) {
     const resourceTypeFields = currentResourceType.value.data.typeFields;
-    const customFields = [];
+    const customFields: any = [];
     for (const field of resourceTypeFields) {
       customFields.push({
         id: field.id,

@@ -82,7 +82,7 @@ const name = useField('name', 'required', { label: t('Ime polja') });
 const input = useField<string>('input', 'required', { label: t('Oblika polja') });
 const options = useField('options', '', { label: t('Možnosti polja') });
 const rules = useField('rules', '', { label: t('Pravila polja') });
-const showInList = useField('showInList', '', { label: t('Prikaži na seznamih') });
+const showInList: any = useField('showInList', '', { label: t('Prikaži na seznamih') });
 
 const saveResource = handleSubmit(async values => {
   console.log(values)

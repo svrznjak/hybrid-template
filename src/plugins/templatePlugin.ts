@@ -12,8 +12,8 @@ import nativeAppBoot from './templatePlugin/nativeAppBoot';
 let isMounted = false;
 
 export default {
-  install: (app: any) => {
-    const firebaseApp = initializeApp(firebaseConfig);
+  install: async (app: any) => {
+    const firebaseApp = initializeApp(await firebaseConfig());
     const analytics = getAnalytics(firebaseApp);
     rtDatabase.initDatabse(firebaseApp);
   },

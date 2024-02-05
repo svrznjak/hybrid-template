@@ -1,10 +1,10 @@
-import { fileURLToPath, URL } from 'node:url'
+import { fileURLToPath, URL } from 'node:url';
 
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
 
-import indexFilePlugin from './vite-plugins/indexFilePlugin'
-import appConfig from './src/app/config.json'
+import indexFilePlugin from './vite-plugins/indexFilePlugin';
+import appConfig from './src/app/config.json';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue(), indexFilePlugin()],
@@ -17,4 +17,4 @@ export default defineConfig({
   define: {
     __APP_CONFIG__: appConfig
   }
-})
+});
