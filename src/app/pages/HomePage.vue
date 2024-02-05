@@ -147,6 +147,11 @@ const isOpenAddNew = ref(false);
   display: none;
 }
 
+/* IOS input label white background */
+.item-input-outline.item-content .item-label {
+  background-color: white;
+}
+
 /* Hide scrollbar for IE, Edge and Firefox */
 .page-content {
   -ms-overflow-style: none;

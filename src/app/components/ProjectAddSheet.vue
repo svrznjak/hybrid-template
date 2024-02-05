@@ -38,15 +38,15 @@ const { handleSubmit } = useForm({
 });
 const name = useField('name', 'required', { label: t('Ime') });
 const customerName = useField('customerName', '', { label: t('Ime Stranke') });
-const description = useField('description', '', { label: t('Ostalo') });
-const fromDate = useField('fromDate', '', { label: t('Od') });
-const toDate = useField('toDate', '', { label: t('Do') });
+const fromDate = useField('fromDate', 'required', { label: t('Od') });
+const toDate = useField('toDate', 'required', { label: t('Do') });
+
 
 
 const saveNameAndDescription = handleSubmit(async values => {
   try {
     f7.dialog.preloader(t('Ustvarjanje projekta'));
-    await FirebaseFirestore.addDocument({
+    const newProject = await FirebaseFirestore.addDocument({
       reference: props.collectionPath,
       data: {
         ...values,
@@ -56,6 +56,8 @@ const saveNameAndDescription = handleSubmit(async values => {
     });
     f7.dialog.close();
     emit('close');
+    console.log(newProject)
+    f7.view.main.router.navigate(newProject.reference.path);
   } catch (e) {
     f7.dialog.close();
     f7.dialog.alert(t('Napaka'), t('Shranjevanje ni uspelo.'));
@@ -70,22 +72,18 @@ const saveNameAndDescription = handleSubmit(async values => {
     <f7-page-content>
       <div>
         <f7-block>
-          <h1>{{ t('Urejanje imena in opisa') }}</h1>
+          <h1>{{ t('Dodajanje projekta') }}</h1>
         </f7-block>
-        <f7-list form dividers-ios strong-ios outline-ios @submit="saveNameAndDescription">
-          <FieldListInput :name="t('Ime')" :label="t('Ime')" type="text" :outline="theme.md" :placeholder="t('Ime vrste')"
-            :field="name" @input="name.value.value = $event.target.value" clear-button />
-          <FieldListInput :name="t('Ime Stranke')" :label="t('Ime Stranke')" type="text" :outline="theme.md"
-            :placeholder="t('Ime Stranke')" :field="customerName" @input="customerName.value.value = $event.target.value"
-            clear-button />
-          <FieldListInput :name="t('Od')" :label="t('Od')" :outline="theme.md" type="date" :placeholder="t('Od')"
-            :field="fromDate" @input="fromDate.value.value = $event.target.value" clear-button />
-          <FieldListInput :name="t('Do')" :label="t('Do')" :outline="theme.md" type="date" :placeholder="t('Do')"
-            :field="toDate" @input="toDate.value.value = $event.target.value" clear-button />
-          <FieldListInput :name="t('Ostalo')" :label="t('Ostalo')" :outline="theme.md" type="texteditor"
-            :placeholder="t('Opis')" :field="description"
-            @texteditor:change="(value) => (description.value.value = value)"
-            @input="description.value.value = $event.target.value" clear-button />
+        <f7-list form dividers @submit="saveNameAndDescription">
+          <FieldListInput :name="t('Ime')" :label="t('Ime')" type="text" outline :placeholder="t('Ime vrste')"
+            :field="name" @input="name.value.value = $event.target.value" />
+          <FieldListInput :name="t('Ime Stranke')" :label="t('Ime Stranke')" type="text" outline
+            :placeholder="t('Ime Stranke')" :field="customerName"
+            @input="customerName.value.value = $event.target.value" />
+          <FieldListInput :name="t('Od')" :label="t('Od')" outline type="date" :placeholder="t('Od')" :field="fromDate"
+            @input="fromDate.value.value = $event.target.value" />
+          <FieldListInput :name="t('Do')" :label="t('Do')" outline type="date" :placeholder="t('Do')" :field="toDate"
+            @input="toDate.value.value = $event.target.value" />
           <f7-block style="display: flex; gap: 10px; justify-content: space-between;">
             <f7-button round-md @click="emit('close')">{{ t('Prekliči') }}</f7-button>
             <f7-button fill round style="width: 150px;" type="submit">{{ t('Ustvari projekt') }}</f7-button>

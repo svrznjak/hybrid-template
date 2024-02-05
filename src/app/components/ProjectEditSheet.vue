@@ -41,8 +41,8 @@ const { handleSubmit } = useForm({
 });
 const name = useField('name', 'required', { label: t('Ime') });
 const customerName = useField('customerName', '', { label: t('Ime Stranke') });
-const fromDate = useField('fromDate', '', { label: t('Od') });
-const toDate = useField('toDate', '', { label: t('Do') });
+const fromDate = useField('fromDate', 'required', { label: t('Od') });
+const toDate = useField('toDate', 'required', { label: t('Do') });
 
 
 const saveInfo = handleSubmit(async values => {
@@ -72,16 +72,16 @@ const saveInfo = handleSubmit(async values => {
         <f7-block>
           <h1>{{ t('Urejanje informacij projekta') }}</h1>
         </f7-block>
-        <f7-list form dividers-ios strong-ios outline-ios @submit="saveInfo">
-          <FieldListInput :name="t('Ime')" :label="t('Ime')" type="text" :outline="theme.md" :placeholder="t('Ime vrste')"
+        <f7-list form dividers @submit="saveInfo">
+          <FieldListInput :name="t('Ime')" :label="t('Ime')" type="text" outline :placeholder="t('Ime vrste')"
             :field="name" @input="name.value.value = $event.target.value" />
-          <FieldListInput :name="t('Ime Stranke')" :label="t('Ime Stranke')" type="text" :outline="theme.md"
+          <FieldListInput :name="t('Ime Stranke')" :label="t('Ime Stranke')" type="text" outline
             :placeholder="t('Ime Stranke')" :field="customerName"
             @input="customerName.value.value = $event.target.value" />
-          <FieldListInput :name="t('Od')" :label="t('Od')" :outline="theme.md" type="date" :placeholder="t('Od')"
-            :field="fromDate" @input="fromDate.value.value = $event.target.value" />
-          <FieldListInput :name="t('Do')" :label="t('Do')" :outline="theme.md" type="date" :placeholder="t('Do')"
-            :field="toDate" @input="toDate.value.value = $event.target.value" />
+          <FieldListInput :name="t('Od')" :label="t('Od')" outline type="date" :placeholder="t('Od')" :field="fromDate"
+            @input="fromDate.value.value = $event.target.value" />
+          <FieldListInput :name="t('Do')" :label="t('Do')" outline type="date" :placeholder="t('Do')" :field="toDate"
+            @input="toDate.value.value = $event.target.value" />
           <f7-block style="display: flex; gap: 10px; justify-content: space-between;">
             <f7-button round-md @click="emit('close')">{{ t('Prekliči') }}</f7-button>
             <f7-button fill round style="width: 150px;" type="submit">{{ t('Shrani') }}</f7-button>

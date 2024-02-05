@@ -81,9 +81,9 @@ const saveNameAndDescription = handleSubmit(async values => {
         <hr />
         <f7-list form @submit="saveNameAndDescription">
           <FieldListInput :name="t('Ime')" :label="t('Ime')" type="text" outline :placeholder="t('Ime vrste')"
-            :field="name" @input="name.value.value = $event.target.value" clear-button />
+            :field="name" @input="name.value.value = $event.target.value" />
           <FieldListInput :name="t('Opis')" :label="t('Opis')" outline type="textarea" :placeholder="t('Opis')"
-            :field="description" @input="description.value.value = $event.target.value" clear-button />
+            :field="description" @input="description.value.value = $event.target.value" />
           <f7-block style="display: flex; gap: 10px; justify-content: space-between;">
             <f7-button round-md @click="close">{{ t('Prekliči') }}</f7-button>
             <f7-button fill round style="width: 150px;" type="submit">{{ t('Shrani') }}</f7-button>

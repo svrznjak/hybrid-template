@@ -70,6 +70,7 @@ function moreOptionsPopup(typeFieldIndex: number) {
       buttons: [
         {
           text: 'Uredi',
+          color: 'blue',
           onClick: () => {
             isEditOpen.value = true;
             editingFieldId.value = typeFields.value[typeFieldIndex].id;
@@ -77,19 +78,21 @@ function moreOptionsPopup(typeFieldIndex: number) {
         },
         {
           text: 'Premakni gor',
+          color: 'blue',
           onClick: () => {
             moveUp(typeFieldIndex);
           },
         },
         {
           text: 'Premakni dol',
+          color: 'blue',
           onClick: () => {
             moveDown(typeFieldIndex);
           },
         },
         {
           text: 'Izbriši',
-          color: 'yellow',
+          color: 'red',
           onClick: () => {
             f7.dialog.confirm(
               'Če želite obnoviti polje in podatke, ki so bili vneseni v to polje, boste morali ročno dodati novo polje z istim id-jem (' + typeFields.value[typeFieldIndex].id + ') in istimi nastavitvami.',
@@ -103,7 +106,7 @@ function moreOptionsPopup(typeFieldIndex: number) {
         {
           text: 'Prekliči',
           close: true,
-          color: 'red',
+          color: 'blue',
         }
       ],
       verticalButtons: true,

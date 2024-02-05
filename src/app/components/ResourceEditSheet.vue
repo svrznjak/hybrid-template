@@ -121,7 +121,7 @@ function getFieldById(id: string | number): any {
             <FieldListInput
               v-if="getFieldById(index)?.type.input !== 'checkbox' && getFieldById(index)?.type.input !== 'toggle'"
               :type="getFieldById(index)?.type.input || 'text'" :label="getFieldById(index)?.name || ''" :field="field"
-              @input="field.value.value = $event.target.value" outline clear-button>
+              @input="field.value.value = $event.target.value" outline>
               <option v-if="getFieldById(index)?.type.input === 'select'"
                 v-for="option of getFieldById(index)?.type.options.split(';') || []" :key="option" :value="option">{{
                   option }}</option>
