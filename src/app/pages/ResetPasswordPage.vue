@@ -35,19 +35,21 @@ function routeToLogin() {
 </script>
 <template>
   <f7-page name="resetPassword">
-    <f7-block>
-      <h1>{{ t('reset-password') }}</h1>
-      <p>{{ t('description') }} </p>
-    </f7-block>
-    <Form @submit="sendPasswordResetEmail()">
-      <f7-list dividers-ios strong-ios inset-ios>
-        <FieldListInput :name="t('email')" :label="t('email')" type="email" :outline="theme.md"
-          :placeholder="t('your-email')" :field="email" @input="email.value.value = $event.target.value" clear-button />
-      </f7-list>
-      <f7-block style="display: flex; gap: 10px; justify-content: space-between; flex-wrap: wrap-reverse;">
-        <f7-button round-md @click="routeToLogin">{{ t('back-to-login') }}</f7-button>
-        <f7-button fill round style="width: fit-content;" type="submit">{{ t('send-reset-link') }}</f7-button>
+    <div>
+      <f7-block>
+        <h1>{{ t('reset-password') }}</h1>
+        <p>{{ t('description') }} </p>
       </f7-block>
-    </Form>
+      <Form @submit="sendPasswordResetEmail()">
+        <f7-list dividers-ios strong-ios inset-ios>
+          <FieldListInput :name="t('email')" :label="t('email')" type="email" :outline="theme.md"
+            :placeholder="t('your-email')" :field="email" @input="email.value.value = $event.target.value" clear-button />
+        </f7-list>
+        <f7-block style="display: flex; gap: 10px; justify-content: space-between; flex-wrap: wrap-reverse;">
+          <f7-button round-md @click="routeToLogin">{{ t('back-to-login') }}</f7-button>
+          <f7-button fill round style="width: fit-content;" type="submit">{{ t('send-reset-link') }}</f7-button>
+        </f7-block>
+      </Form>
+    </div>
   </f7-page>
 </template>

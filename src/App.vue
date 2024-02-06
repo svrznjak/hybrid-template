@@ -47,7 +47,7 @@ onMounted(() => {
     <f7-panel v-if="sidePanelState" left reveal dark :visible-breakpoint="1024">
       <LeftPanel />
     </f7-panel>
-    <f7-view main class="safe-areas" url="/" color-theme="red" />
+    <f7-view :ios-swipe-back="false" main class="safe-areas" url="/" color-theme="red" />
   </f7-app>
 </template>
 

@@ -62,7 +62,7 @@ const saveNameAndDescription = handleSubmit(async values => {
     <f7-page-content>
       <div>
         <f7-block>
-          <h1>{{ t('Urejanje imena in opisa') }}</h1>
+          <h1>{{ t('Dodajanje nove vrste vira') }}</h1>
         </f7-block>
         <f7-list form dividers-ios strong-ios outline-ios @submit="saveNameAndDescription">
           <FieldListInput :name="t('Ime')" :label="t('Ime')" type="text" outline :placeholder="t('Ime vrste')"

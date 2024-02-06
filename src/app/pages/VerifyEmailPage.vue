@@ -47,17 +47,19 @@ async function sendEmailVerification() {
 </script>
 <template>
   <f7-page name="verifyEmail">
-    <f7-block>
-      <h1
-        style="font-size: 24px; margin-top: 30px; margin-bottom: 10px; padding-bottom:30px; text-align:center; border-bottom: 1px solid var(--borderColor);">
-        {{ t('email-verification') }}
-      </h1>
-      <p v-html="t('email-verification-sent', { email: currentUser!.email })"></p>
-    </f7-block>
-    <f7-block style="display: flex; gap: 10px; justify-content: space-between;">
-      <f7-button round-md @click="signOut">{{ t('sign-out') }}</f7-button>
-      <f7-button fill round style="width: 100px;" type="button" @click="sendEmailVerification">{{
-        t('resend-verification-email') }}</f7-button>
-    </f7-block>
+    <div>
+      <f7-block>
+        <h1
+          style="font-size: 24px; margin-top: 30px; margin-bottom: 10px; padding-bottom:30px; text-align:center; border-bottom: 1px solid var(--borderColor);">
+          {{ t('email-verification') }}
+        </h1>
+        <p v-html="t('email-verification-sent', { email: currentUser!.email })"></p>
+      </f7-block>
+      <f7-block style="display: flex; gap: 10px; justify-content: space-between;">
+        <f7-button round-md @click="signOut">{{ t('sign-out') }}</f7-button>
+        <f7-button fill round type="button" @click="sendEmailVerification">{{
+          t('resend-verification-email') }}</f7-button>
+      </f7-block>
+    </div>
   </f7-page>
 </template>

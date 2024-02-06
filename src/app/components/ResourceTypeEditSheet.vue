@@ -134,7 +134,7 @@ const saveResource = handleSubmit(async values => {
     <f7-page-content>
       <div>
         <f7-block>
-          <h1>{{ t('Urejanje') }}</h1>
+          <h1>{{ t('Polje vrste vira') }}</h1>
         </f7-block>
         <hr />
         <f7-list form @submit="saveResource">

@@ -112,7 +112,7 @@ function getFieldById(id: string | number): any {
     <f7-page-content>
       <div>
         <f7-block style="display: flex; gap: 10px; justify-content: space-between;">
-          <h1 style="margin-bottom: 0;">{{ t('Urejanje') }}</h1>
+          <h1 style="margin-bottom: 0;">{{ t('Podatki vira') }}</h1>
           <f7-toggle color="green" v-model:checked="isActive"></f7-toggle>
         </f7-block>
         <hr />

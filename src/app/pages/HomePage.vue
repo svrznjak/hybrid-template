@@ -16,22 +16,23 @@ import logo from '#/assets/appIcons/egm-logo.png';
 appState.dispatch('setSidePanel', false);
 
 const getUsersCompanies = async (userId: string) => {
-  const { snapshots } = await FirebaseFirestore.getCollectionGroup({
-    reference: 'resources',
+  const { snapshots } = await FirebaseFirestore.getCollection({
+    reference: 'Companies',
     compositeFilter: {
       type: 'and',
       queryConstraints: [
         {
           type: 'where',
-          fieldPath: `uid`,
-          opStr: '==',
+          fieldPath: `users`,
+          opStr: 'array-contains',
           value: userId
         },
       ],
     },
   });
+  console.log(snapshots);
   const companiesReferences = snapshots.map((snap: any) => {
-    return getParentReference(snap.path, 4);
+    return snap.path
   });
   return companiesReferences;
 };
