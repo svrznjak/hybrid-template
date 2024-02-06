@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import appState from '@/appState';
-import { computed, onMounted, onUnmounted, ref, watch, watchEffect } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watchEffect } from 'vue';
 import ResourceEditSheet from '../components/ResourceEditSheet.vue';
 import messages from './HomePage.i18n.json';
 import { useI18n } from "vue-i18n";
@@ -109,10 +109,15 @@ function generateCustomFieldsText(resource) {
 
 const isAddMode = ref(false);
 
+
 </script>
 <template>
   <f7-page name="resources">
     <f7-navbar back-link :title="t('Nazaj na vrste virov')">
+      <f7-nav-right>
+        <f7-button style="width: fit-content;" @click="$router.back('/', { force: true })"><f7-icon f7="house"
+            size="25"></f7-icon></f7-button>
+      </f7-nav-right>
     </f7-navbar>
     <div>
       <f7-block style="display: flex; gap: 10px;  justify-content: space-between; flex-wrap: wrap;"

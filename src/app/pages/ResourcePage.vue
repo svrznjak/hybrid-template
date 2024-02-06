@@ -139,7 +139,7 @@ function generateTitleText(title: any) {
 
 function generateBadgeText(status: string): string {
   if (status === "draft") return t("Osnutek");
-  else if (status === "confirmed") return t("Potrjen");
+  else if (status === "confirmed") return t("Aktiven");
   else if (status === "finished") return t("Zaključen");
   else return '';
 }
@@ -159,6 +159,10 @@ function generateBadgeColor(status: string): string {
       <f7-nav-left>
         <f7-badge v-if="!currentResourceType?.data?.isActive">{{ t('Vrsta vira ni aktivna') }}</f7-badge>
       </f7-nav-left>
+      <f7-nav-right>
+        <f7-button style="width: fit-content;" @click="$router.back('/', { force: true })"><f7-icon f7="house"
+            size="25"></f7-icon></f7-button>
+      </f7-nav-right>
     </f7-navbar>
     <div>
       <f7-block style="display: flex; gap: 10px;  justify-content: space-between; flex-wrap: wrap;" v-if="resource">

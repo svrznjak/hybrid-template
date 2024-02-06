@@ -36,6 +36,10 @@ const isOpenAddNew = ref(false);
 <template>
   <f7-page name="resourceTypes">
     <f7-navbar style="z-index: 100;" back-link :title="t('Nazaj na projekte')">
+      <f7-nav-right>
+        <f7-button style="width: fit-content;" @click="$router.back('/', { force: true })"><f7-icon f7="house"
+            size="25"></f7-icon></f7-button>
+      </f7-nav-right>
     </f7-navbar>
     <f7-block style="display: flex; gap: 10px;  justify-content: space-between;">
       <h1 style="margin-bottom: 0px">{{ t('Vrste virov') }}</h1>

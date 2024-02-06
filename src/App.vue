@@ -5,7 +5,9 @@ import routes from '@/app/routes';
 import appState from './appState';
 import LeftPanel from './app/LeftPanel.vue';
 import { useI18n } from 'vue-i18n';
-import { onMounted } from 'vue';
+import { onMounted, watch } from 'vue';
+import { useDark } from '@vueuse/core';
+
 const { t } = useI18n();
 const sidePanelState = useStore(appState, 'getSidePanelState');
 console.log(__APP_CONFIG__);
@@ -28,9 +30,15 @@ const f7params = {
   },
   darkTheme: true,
 }
+
+const isDark = useDark();
+watch(() => isDark, (value) => {
+  f7.setDarkMode(value);
+});
+
 onMounted(() => {
-  //f7.setDarkMode(true);
   f7.setColorTheme("#e4262d");
+  f7.setDarkMode(isDark.value);
 })
 </script>
 
@@ -43,4 +51,12 @@ onMounted(() => {
   </f7-app>
 </template>
 
-<style></style>
+<style>
+/*
+:root {
+  --f7-primary-color: #000 !important;
+  --f7-theme-color: #000 !important;
+  --f7-md-surface-2: #efefef !important;
+}
+*/
+</style>

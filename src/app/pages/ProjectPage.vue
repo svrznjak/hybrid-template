@@ -144,7 +144,7 @@ const statusInText = computed(() => {
     case 'draft':
       return t('Osnutek');
     case 'confirmed':
-      return t('Potrjen');
+      return t('Aktiven');
     case 'finished':
       return t('Zaključen');
     default:
@@ -178,7 +178,7 @@ async function confirmProject() {
       data: { status: 'confirmed' }
     });
     f7.dialog.close();
-    f7.dialog.alert(t('Projekt potrjen'), t('Projekt je bil uspešno potrjen.'));
+    f7.dialog.alert(t('Projekt je bil uspešno potrjen.'), t('Projekt potrjen'));
   } catch (e) {
     f7.dialog.close();
     f7.dialog.alert(t('Napaka'), t('Shranjevanje ni uspelo.'));
@@ -291,6 +291,10 @@ const selectResourcesPath = ref<string | undefined>(undefined);
   <f7-page name="resources">
     <f7-navbar style="z-index: 100;" :back-link="currentProject?.data?.name ? currentProject.data.name : ''"
       :title="currentProject?.data?.name ? currentProject.data.name : ''">
+      <f7-nav-right>
+        <f7-button style="width: fit-content;" @click="$router.back('/', { force: true })"><f7-icon f7="house"
+            size="25"></f7-icon></f7-button>
+      </f7-nav-right>
     </f7-navbar>
     <div>
       <f7-block style="display: flex; gap: 10px;  justify-content: space-between; flex-wrap: wrap;" v-if="currentProject">

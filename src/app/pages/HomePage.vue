@@ -92,6 +92,15 @@ const isOpenAddNew = ref(false);
         </div>
       </f7-block>
       <hr />
+      <f7-block-title>{{ t('Aktivni projekti') }}</f7-block-title>
+      <f7-list media-list dividers :inset="theme.md" strong-ios outline v-if="projects" class="fix-inset">
+        <f7-list-item v-for="project in confirmedProjects" :key="project.id"
+          :link="`${companiesPaths[0]}/projects/${project.id}`" :title="project.name" :subtitle="project.customerName">
+          <div style="font-size:14px">{{ new Date(project.fromDate).toLocaleDateString() + ' - ' + new
+            Date(project.toDate).toLocaleDateString() +
+            '&nbsp;&nbsp;' }}</div>
+        </f7-list-item>
+      </f7-list>
       <f7-block-title>{{ t('Osnutki projektov') }}</f7-block-title>
       <f7-list media-list dividers :inset="theme.md" strong-ios outline v-if="projects" class="fix-inset">
         <f7-list-item v-for="project in draftProjects" :key="project.id"
@@ -101,15 +110,7 @@ const isOpenAddNew = ref(false);
             '&nbsp;&nbsp;' }}</div>
         </f7-list-item>
       </f7-list>
-      <f7-block-title>{{ t('Potrjeni projekti') }}</f7-block-title>
-      <f7-list media-list dividers :inset="theme.md" strong-ios outline v-if="projects" class="fix-inset">
-        <f7-list-item v-for="project in confirmedProjects" :key="project.id"
-          :link="`${companiesPaths[0]}/projects/${project.id}`" :title="project.name" :subtitle="project.customerName">
-          <div style="font-size:14px">{{ new Date(project.fromDate).toLocaleDateString() + ' - ' + new
-            Date(project.toDate).toLocaleDateString() +
-            '&nbsp;&nbsp;' }}</div>
-        </f7-list-item>
-      </f7-list>
+      <!--
       <f7-block-title>{{ t('Zaključeni projekti') }}</f7-block-title>
       <f7-list media-list dividers :inset="theme.md" strong-ios outline v-if="projects" class="fix-inset">
         <f7-list-item v-for="project in finishedProjects" :key="project.id"
@@ -119,6 +120,7 @@ const isOpenAddNew = ref(false);
             '&nbsp;&nbsp;' }}</div>
         </f7-list-item>
       </f7-list>
+    -->
       <f7-block style="display: flex; gap: 10px;">
         <!--<f7-button fill round style="width: 100px;" @click="logOut()">Logout</f7-button>-->
       </f7-block>
