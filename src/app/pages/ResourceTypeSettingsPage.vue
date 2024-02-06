@@ -162,7 +162,7 @@ async function saveTypeFields(typeFields: any) {
 </script>
 <template>
   <f7-page name="resourcesTypeSettings">
-    <f7-navbar back-link :title="t('Nazaj na vire')">
+    <f7-navbar back-link :title="t('Nazaj na vire')" style="z-index: 101;">
       <f7-nav-right>
         <f7-button style="width: fit-content;" @click="$router.back('/', { force: true })"><f7-icon f7="house"
             size="25"></f7-icon></f7-button>

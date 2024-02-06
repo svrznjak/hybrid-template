@@ -5,7 +5,7 @@ import routes from '@/app/routes';
 import appState from './appState';
 import LeftPanel from './app/LeftPanel.vue';
 import { useI18n } from 'vue-i18n';
-import { onMounted, watch } from 'vue';
+import { onMounted, watch, type WritableComputedRef } from 'vue';
 import { useDark } from '@vueuse/core';
 
 const { t } = useI18n();
@@ -32,7 +32,7 @@ const f7params = {
 }
 
 const isDark = useDark();
-watch(() => isDark, (value) => {
+watch(() => isDark.value, (value) => {
   f7.setDarkMode(value);
 });
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
 import appState from '@/appState';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { theme } from 'framework7-vue';
 import messages from './HomePage.i18n.json';
 import { useI18n } from "vue-i18n";
@@ -11,8 +11,11 @@ const { t } = useI18n({
 import { FirebaseFirestore } from '@capacitor-firebase/firestore';
 import { useCollection } from "../store/useCollection";
 import ProjectAddSheet from '../components/ProjectAddSheet.vue';
-import getParentReference from "../utils/getParentReference";
+import { watchThrottled } from '@vueuse/core'
+import * as JsSearch from 'js-search';
+
 import logo from '#/assets/appIcons/egm-logo.png';
+import SearchResultsSheet from "../components/SearchResultsSheet.vue";
 appState.dispatch('setSidePanel', false);
 
 const getUsersCompanies = async (userId: string) => {
@@ -62,6 +65,29 @@ const finishedProjects = computed(() => {
   return projects.value.data.filter((project: any) => project.status === 'finished');
 })
 
+const searchQuery = ref('');
+const searchResults: any = ref([]);
+
+const allResources = ref<any[]>([]);
+
+watchThrottled(() => searchQuery.value, async (query, previousQuery) => {
+  if (query === '') {
+    return;
+  }
+  if (allResources.value.length === 0) {
+    const result = await FirebaseFirestore.getCollectionGroup({
+      reference: 'resources',
+    });
+    allResources.value = result.snapshots.map((snap: any) => {
+      return { ...snap.data, id: snap.id, path: snap.path }
+    });
+  }
+
+  let search = new JsSearch.Search("_id");
+  search.addIndex("name");
+  search.addDocuments(allResources.value);
+  searchResults.value = search.search(searchQuery.value);
+}, { throttle: 1000 })
 
 async function logOut() {
   try {
@@ -78,9 +104,9 @@ const isOpenAddNew = ref(false);
 <template>
   <f7-page name="home">
     <f7-navbar>
-      <f7-searchbar></f7-searchbar>
+      <f7-searchbar v-model:value="searchQuery" :disable-button="false"></f7-searchbar>
     </f7-navbar>
-    <div>
+    <div id="page-content-search-resoults">
       <f7-block style="display: flex; gap: 10px;  justify-content: space-between;">
         <img :src="logo" height="40" />
         <div style="display: flex; gap: 10px;">
@@ -127,6 +153,8 @@ const isOpenAddNew = ref(false);
       </f7-block>
       <ProjectAddSheet :collectionPath="companiesPaths[0] + '/projects'" :isOpen="isOpenAddNew"
         @close="isOpenAddNew = false" />
+      <SearchResultsSheet v-if="searchQuery !== ''" :displayedResources="searchResults" :opened="searchQuery !== ''"
+        :isOpen="searchQuery !== ''" />
     </div>
   </f7-page>
 </template>
@@ -152,7 +180,7 @@ const isOpenAddNew = ref(false);
 
 /* IOS input label white background */
 .item-input-outline.item-content .item-label {
-  background-color: white;
+  background-color: var(--f7-sheet-bg-color);
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */

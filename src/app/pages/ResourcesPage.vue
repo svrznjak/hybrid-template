@@ -113,7 +113,7 @@ const isAddMode = ref(false);
 </script>
 <template>
   <f7-page name="resources">
-    <f7-navbar back-link :title="t('Nazaj na vrste virov')">
+    <f7-navbar back-link :title="t('Nazaj na vrste virov')" style="z-index: 102;">
       <f7-nav-right>
         <f7-button style="width: fit-content;" @click="$router.back('/', { force: true })"><f7-icon f7="house"
             size="25"></f7-icon></f7-button>

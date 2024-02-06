@@ -289,7 +289,7 @@ const selectResourcesPath = ref<string | undefined>(undefined);
 </script>
 <template>
   <f7-page name="resources">
-    <f7-navbar style="z-index: 100;" :back-link="currentProject?.data?.name ? currentProject.data.name : ''"
+    <f7-navbar style="z-index: 115;" :back-link="currentProject?.data?.name ? currentProject.data.name : ''"
       :title="currentProject?.data?.name ? currentProject.data.name : ''">
       <f7-nav-right>
         <f7-button style="width: fit-content;" @click="$router.back('/', { force: true })"><f7-icon f7="house"

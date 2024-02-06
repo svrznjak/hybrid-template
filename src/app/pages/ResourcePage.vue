@@ -154,7 +154,7 @@ function generateBadgeColor(status: string): string {
 </script>
 <template>
   <f7-page name="resources">
-    <f7-navbar :back-link="currentResourceType?.data?.name ? currentResourceType.data.name : ''"
+    <f7-navbar style="z-index: 104;" :back-link="currentResourceType?.data?.name ? currentResourceType.data.name : ''"
       :title="currentResourceType?.data?.name ? currentResourceType.data.name : ''">
       <f7-nav-left>
         <f7-badge v-if="!currentResourceType?.data?.isActive">{{ t('Vrsta vira ni aktivna') }}</f7-badge>
