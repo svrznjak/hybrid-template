@@ -7,7 +7,7 @@ import indexFilePlugin from './vite-plugins/indexFilePlugin';
 import appConfig from './src/app/config.json';
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/egm/',
+  base: '/app/',
   plugins: [vue(), indexFilePlugin()],
   resolve: {
     alias: {

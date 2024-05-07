@@ -123,8 +123,12 @@ function closeEditMode() {
   isEditMode.value = false;
 }
 
-function generateTitleText(title: any) {
-  if (typeof title === "string") return title;
+function generateTitleText(title: any, inputType: string) {
+  if (typeof title === "string") {
+    if (inputType === "date") {
+      return new Date(title).toLocaleDateString();
+    } else return title;
+  }
   if (typeof title === "boolean") {
     return title ? t("Da") : t("Ne");
   } else if (typeof title === "object") {
@@ -135,6 +139,14 @@ function generateTitleText(title: any) {
     return text;
   }
   return "";
+}
+function generateLink(title: any, inputType: string) {
+  if (inputType === "tel") {
+    return `tel:${title}`;
+  } else if (inputType === "email") {
+    return `mailto:${title}`;
+  } else return false;
+
 }
 
 function generateBadgeText(status: string): string {
@@ -172,8 +184,9 @@ function generateBadgeColor(status: string): string {
             size="25"></f7-icon></f7-button>
       </f7-block>
       <f7-list inset dividers strong-ios outline class="fix-inset">
-        <f7-list-item v-for="field of customFields" :key="field.id" :title="generateTitleText(field.value)"
-          :after="field.name">
+        <f7-list-item v-for="field of customFields" :key="field.id"
+          :title="generateTitleText(field.value, field.type.input)" :after="field.name"
+          :link="generateLink(field.value, field.type.input)" prevent-router external>
         </f7-list-item>
       </f7-list>
       <f7-block-title>{{ t('Povezani projekti') }}</f7-block-title>

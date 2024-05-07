@@ -52,6 +52,7 @@ const inputFields: any = {};
 const arrayOfCheckboxes: any = [];
 
 props.fields.forEach((field: any) => {
+  console.log(field);
   if (field.id === 'isActive') return;
   if (field.type.input === 'checkbox') {
     arrayOfCheckboxes.push(field.id);
@@ -69,6 +70,7 @@ props.fields.forEach((field: any) => {
     inputFields[field.id] = useField(field.id, field.rules, { validateOnValueUpdate: false, label: field.name });
   }
 });
+console.log(inputFields)
 
 
 const isActive = ref(getFieldById('isActive')?.value);
@@ -124,7 +126,7 @@ function getFieldById(id: string | number): any {
               @input="field.value.value = $event.target.value" outline>
               <option v-if="getFieldById(index)?.type.input === 'select'"
                 v-for="option of getFieldById(index)?.type.options.split(';') || []" :key="option" :value="option">{{
-                  option }}</option>
+    option }}</option>
             </FieldListInput>
             <f7-list v-if="getFieldById(index)?.type.input === 'checkbox'" outline inset
               style="margin-bottom:10px; margin-top: 10px">

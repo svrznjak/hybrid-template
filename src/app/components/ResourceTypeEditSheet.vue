@@ -144,13 +144,14 @@ const saveResource = handleSubmit(async values => {
           <FieldListInput :name="t('Ime')" :label="t('Ime polja')" type="text" outline inset
             :placeholder="t('Ime polja npr. Številka izkaznice')" :field="name"
             @input="name.value.value = $event.target.value" />
-          <FieldListInput :name="t('Oblika')" :label="t('Oblika polja')" type="select"
-            :disabled="props.editingFieldId !== undefined" outline inset :field="input"
+          <FieldListInput :name="t('Oblika')" :label="t('Oblika polja')" type="select" outline inset :field="input"
             @input="input.value.value = $event.target.value">
             <option value="text">{{ t('Besedilo') }}</option>
             <option value="textarea">{{ t('Večvrstično besedilo') }}</option>
             <option value="number">{{ t('Številka') }}</option>
             <option value="date">{{ t('Datum') }}</option>
+            <option value="tel">{{ t('Telefonska številka') }}</option>
+            <option value="email">{{ t('E-naslov') }}</option>
             <option value="select">{{ t('Izbira ene vrednosti') }}</option>
             <option value="checkbox">{{ t('Izbira večih vrednosti') }}</option>
             <option value="toggle">{{ t('Izbira "Da" ali "Ne"') }}</option>

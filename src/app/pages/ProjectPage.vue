@@ -297,17 +297,19 @@ const selectResourcesPath = ref<string | undefined>(undefined);
       </f7-nav-right>
     </f7-navbar>
     <div>
-      <f7-block style="display: flex; gap: 10px;  justify-content: space-between; flex-wrap: wrap;" v-if="currentProject">
+      <f7-block style="display: flex; gap: 10px;  justify-content: space-between; flex-wrap: wrap;"
+        v-if="currentProject">
         <div>
           <h1 style="margin-bottom: 0px; margin-top: 0px;">{{ currentProject.data ? currentProject.data.name : "" }}
             <f7-chip style="margin-left: 10px;">{{
-              statusInText }}</f7-chip>
+      statusInText }}</f7-chip>
           </h1>
-          <h3 style="margin-top: 0px; margin-bottom: 0px;">{{ currentProject.data ? currentProject.data.customerName : ""
-          }}
+          <h3 style="margin-top: 0px; margin-bottom: 0px;">{{ currentProject.data ? currentProject.data.customerName :
+      ""
+            }}
           </h3>
           <h4 style="margin-top: 0px; margin-bottom: 0px;">{{ currentProject.data ? new
-            Date(currentProject.data.fromDate).toLocaleDateString() : "" }} -
+      Date(currentProject.data.fromDate).toLocaleDateString() : "" }} -
             {{ currentProject.data ? new Date(currentProject.data.toDate).toLocaleDateString() : "" }}</h4>
         </div>
         <f7-button v-if="currentProject?.data?.status !== 'finished'" fill round style="width: fit-content;"
@@ -326,9 +328,9 @@ const selectResourcesPath = ref<string | undefined>(undefined);
           <f7-block style="margin-top: 10px; margin-bottom: 0px;">
             <div style="display: flex; flex-direction: row; justify-content: space-between; flex-wrap: wrap; ">
               <h2 large color="black" style="margin-top: 5px; margin-bottom: 5px;">{{
-                resourceTypes.data.find((type: any) => `/Companies/${props.companyId}/resourceTypes/${type.id}` ==
-                  String(key))?.name
-              }}
+      resourceTypes.data.find((type: any) => `/Companies/${props.companyId}/resourceTypes/${type.id}` ==
+        String(key))?.name
+    }} ({{ selectedResource.length }})
               </h2>
               <f7-button v-if="currentProject?.data?.status !== 'finished'" style="width: fit-content;"
                 @click="selectResourcesPath = String(key)"><f7-icon f7="plus" size="25"></f7-icon>
@@ -339,12 +341,12 @@ const selectResourcesPath = ref<string | undefined>(undefined);
             <f7-list-item v-for="resource of selectedResources[key]" :key="resource.id" :title="resource.name">
               <template #after v-if="currentProject?.data?.status !== 'finished'">
                 <f7-button style="height: 20px;" @click="f7.dialog.confirm('Želite odstaniti ta vir iz projekta', 'Odstranjevanje vira', () => {
-                  removeResourceFromProject(`${key}/resources/${resource.id}`)
-                })"><f7-icon f7="equal_square
+      removeResourceFromProject(`${key}/resources/${resource.id}`)
+    })"><f7-icon f7="equal_square
 " size="15"></f7-icon></f7-button>
               </template>
               <p style="font-size:13px">{{ generateCustomFieldsText(resource, resourceTypes.data.find((type: any) =>
-                `/Companies/${props.companyId}/resourceTypes/${type.id}` == String(key))) }}</p>
+      `/Companies/${props.companyId}/resourceTypes/${type.id}` == String(key))) }}</p>
               <div v-html="generateUsedInProjectsText(resource)"></div>
             </f7-list-item>
           </f7-list>
@@ -365,13 +367,13 @@ const selectResourcesPath = ref<string | undefined>(undefined);
     </div>
     <ProjectEditSheet
       v-if="currentProject?.data !== undefined && resourceTypes?.data !== undefined && currentProject?.data?.status !== 'finished'"
-      :documentPath="'/Companies/' + props.companyId + '/projects/' + props.projectId" :projectInfo="currentProject.data"
-      :isOpen="isEditMode" @close="isEditMode = false" />
+      :documentPath="'/Companies/' + props.companyId + '/projects/' + props.projectId"
+      :projectInfo="currentProject.data" :isOpen="isEditMode" @close="isEditMode = false" />
     <ProjectResourceSelectorSheet
       v-if="currentProject?.data !== undefined && resourceTypes?.data !== undefined && currentProject?.data?.status !== 'finished'"
       :projectDocumentPath="'/Companies/' + props.companyId + '/projects/' + props.projectId"
       :projectInfo="currentProject.data" :resourceTypePath="selectResourcesPath" :resourceType="resourceTypes.data.find((type: any) =>
-        `/Companies/${props.companyId}/resourceTypes/${type.id}` == selectResourcesPath)"
+      `/Companies/${props.companyId}/resourceTypes/${type.id}` == selectResourcesPath)"
       :isOpen="selectResourcesPath !== undefined" @close="selectResourcesPath = undefined" />
   </f7-page>
 </template>

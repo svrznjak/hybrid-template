@@ -1,17 +1,23 @@
 export interface ICompany {
   name: string;
-  employees: IEmployee[];
+  users: IUserRole;
   projects: IProject[];
   resourceTypes: IResourceType[];
+  path: string;
 }
+
+export interface ICompanyAssociative {
+  [companyId: string]: ICompany;
+}
+
 export interface IProject {
   name: string;
   description: string;
-  startDate: number;
-  endDate: number;
-  customer: string;
-  status: 'active' | 'completed' | 'draft';
-  usedResources: IUsedResource[];
+  fromDate: string;
+  endDate: string;
+  customerName: string;
+  status: 'draft' | 'confirmed' | 'finished';
+  selectedResource: string[];
 }
 
 export interface IUsedResource {
@@ -41,8 +47,6 @@ enum IFieldTypes {
   'boolean'
 }
 
-interface IEmployee {
-  name: string;
-  role: 'admin' | 'employee';
-  uid: string;
+interface IUserRole {
+  [userId: string]: 'admin' | 'manager' | 'employee';
 }

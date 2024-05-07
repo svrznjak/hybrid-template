@@ -45,7 +45,7 @@ const isOpenAddNew = ref(false);
       <h1 style="margin-bottom: 0px">{{ t('Vrste virov') }}</h1>
       <div style="display: flex; gap: 10px;">
         <f7-button fill round style="width: fit-content;" @click="isOpenAddNew = true">{{ t('Nova vrsta vira')
-        }}</f7-button>
+          }}</f7-button>
       </div>
     </f7-block>
     <f7-list dividers strong-ios outline-ios v-if="resourceTypes !== undefined" class="fix-inset">
