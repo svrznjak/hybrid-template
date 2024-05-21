@@ -8,12 +8,14 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n({
   messages
 });
-import { unsubscribeFromDocument, useDocument } from '../store/useDocument';
+import { unsubscribeFromDocument, useDocument } from '@/firestore/useDocument';
 import { f7 } from 'framework7-vue';
 import { FirebaseFirestore } from '@capacitor-firebase/firestore';
-import { unsubscribeFromCollection, useCollection } from '../store/useCollection';
+import { unsubscribeFromCollection, useCollection } from '@/firestore/useCollection';
 import _ from 'lodash';
 import getParentDocument from '../utils/getParentReference';
+import { type IResourceType, resourceTypeSchema } from '#/types/resourceType';
+import { projectSchema, type IProject } from '#/types/project';
 
 appState.dispatch('setSidePanel', false);
 
@@ -96,31 +98,29 @@ watch([() => currentProject?.value?.data?.selectedResources, () => resourceTypes
         },
       })
       await Promise.all([resource, resourceProjects]).then((values) => {
-        console.log(values)
         newSelectedResources[resourceTypePath].push({
           ...values[0].snapshot.data, id: values[0].snapshot.id, _relatedProjects: values[1].snapshots.map((project) => {
             return {
               id: project.id,
-              name: project.data.name,
-              customer: project.data.customer,
-              fromDate: project.data.fromDate,
-              toDate: project.data.toDate,
-              status: project.data.status
+              name: project.data?.name,
+              customer: project.data?.customer,
+              fromDate: project.data?.fromDate,
+              toDate: project.data?.toDate,
+              status: project.data?.status
             }
           })
         });
       });
     }
     selectedResources.value = newSelectedResources;
-    console.log(selectedResources.value);
   }
 });
 
 let intervalListener: any = undefined;
 
 onMounted(async () => {
-  resourceTypes.value = await useCollection('/Companies/' + props.companyId + "/resourceTypes");
-  currentProject.value = await useDocument('/Companies/' + props.companyId + "/projects/" + props.projectId)
+  resourceTypes.value = await useCollection<IResourceType>('/Companies/' + props.companyId + "/resourceTypes", resourceTypeSchema.parse);
+  currentProject.value = await useDocument<IProject>('/Companies/' + props.companyId + "/projects/" + props.projectId, projectSchema.parse)
 
   //set interval listener for save editor changes every 5 seconds
   intervalListener = setInterval(() => {
@@ -132,7 +132,6 @@ onMounted(async () => {
 
 onUnmounted(async () => {
   await unsubscribeFromDocument('/Companies/' + props.companyId + "/projects/" + props.projectId);
-  await unsubscribeFromCollection('/Companies/' + props.companyId + "/resourceTypes");
 
   //clear interval listener
   clearInterval(intervalListener);
@@ -319,7 +318,7 @@ const selectResourcesPath = ref<string | undefined>(undefined);
       <f7-text-editor resizable v-if="editor.currentValue !== undefined" :value="editor.currentValue"
         @texteditor:change="(v) => { editor.currentValue = v; editor.changedSaved = false; }" />
       <f7-block>
-        <p style="positon: relative; font-size: 12px; height: 0px; margin-top: -32px; margin-bottom: 0px;"
+        <p style="position: relative; font-size: 12px; height: 0px; margin-top: -32px; margin-bottom: 0px;"
           v-show="!editor.changedSaved">
           Shranjujem...</p>
       </f7-block>
@@ -377,4 +376,4 @@ const selectResourcesPath = ref<string | undefined>(undefined);
       :isOpen="selectResourcesPath !== undefined" @close="selectResourcesPath = undefined" />
   </f7-page>
 </template>
-<style></style>
+<style></style>../../global/firestore/useCollection../../global/firestore/useDocument

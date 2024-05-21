@@ -18,11 +18,11 @@
   },
   "DEFAULT_LOCALE": "sl-SI",
   "FIREBASE_CONFIG": {
-  "apiKey": "AIzaSyDMuaTXoAfA-uB-4tCPwaTDEpU_WbFScpo",
-  "authDomain": "emg-app-4fe1b.firebaseapp.com",
-  "projectId": "emg-app-4fe1b",
-  "storageBucket": "emg-app-4fe1b.appspot.com",
-  "messagingSenderId": "383260058939",
-  "appId": "1:383260058939:web:509453a197edbf2b07831e"
+    "apiKey": "AIzaSyDMuaTXoAfA-uB-4tCPwaTDEpU_WbFScpo",
+    "authDomain": "emg-app-4fe1b.firebaseapp.com",
+    "projectId": "emg-app-4fe1b",
+    "storageBucket": "emg-app-4fe1b.appspot.com",
+    "messagingSenderId": "383260058939",
+    "appId": "1:383260058939:web:509453a197edbf2b07831e"
   }
 }

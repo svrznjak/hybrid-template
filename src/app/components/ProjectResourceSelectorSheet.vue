@@ -156,7 +156,7 @@ function isResourceUsedInThisProject(resourceId: string): boolean {
 </script>
 <template>
   <f7-sheet :opened="isOpen && resourceTypePath !== undefined" backdrop :close-by-backdrop-click="false"
-    :close-by-outside-click="false" style="height: 90%;">
+    :close-by-outside-click="false" style="height: 98%;">
     <f7-page-content>
       <div>
         <f7-block>

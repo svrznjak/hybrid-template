@@ -15,7 +15,7 @@ export default {
   install: async (app: any) => {
     const firebaseApp = initializeApp(await firebaseConfig());
     const analytics = getAnalytics(firebaseApp);
-    rtDatabase.initDatabse(firebaseApp);
+    //rtDatabase.initDatabse(firebaseApp);
   },
   async initialize(callback: Function) {
     // if native set capacitor settings
@@ -53,8 +53,6 @@ export default {
                   router.navigate({ name: 'home' });
                 }, 1000);
             }
-
-            // try to get user server from firestore
           } catch (err) {
             console.log('🔥', 'firebase user not found');
           }

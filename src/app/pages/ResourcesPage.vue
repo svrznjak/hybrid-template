@@ -7,8 +7,10 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n({
   messages
 });
-import { unsubscribeFromDocument, useDocument } from '../store/useDocument';
-import { useCollection, unsubscribeFromCollection } from '../store/useCollection';
+import { unsubscribeFromDocument, useDocument } from '@/firestore/useDocument';
+import { useCollection, unsubscribeFromCollection } from '@/firestore/useCollection';
+import { type IResourceType, resourceTypeSchema } from '#/types/resourceType';
+import { resourceSchema, type IResource } from '#/types/resource';
 appState.dispatch('setSidePanel', false);
 
 const props = defineProps({
@@ -29,8 +31,9 @@ const currentResourceType = ref();
 const resources = ref();
 
 onMounted(async () => {
-  currentResourceType.value = await useDocument('/Companies/' + props.companyId + "/resourceTypes/" + props.resourceTypeId)
-  resources.value = await useCollection('/Companies/' + props.companyId + "/resourceTypes/" + props.resourceTypeId + "/resources")
+  currentResourceType.value = await useDocument<IResourceType>('/Companies/' + props.companyId + "/resourceTypes/" + props.resourceTypeId, resourceTypeSchema.parse)
+  resources.value = await useCollection<IResource>('/Companies/' + props.companyId + "/resourceTypes/" + props.resourceTypeId + "/resources", resourceSchema.parse),
+    console.log(resources.value);
 });
 
 onUnmounted(async () => {
@@ -130,7 +133,7 @@ const isAddMode = ref(false);
             @click="$router.navigate('/Companies/' + props.companyId + '/resourceTypes/' + props.resourceTypeId + '/settings/')"><f7-icon
               f7="gear" size="25"></f7-icon></f7-button>
           <f7-button fill round style="width: fit-content;" @click="isAddMode = true">{{ t('Dodaj')
-          }}</f7-button>
+            }}</f7-button>
         </div>
       </f7-block>
       <f7-list media-list dividers strong-ios outline-ios class="fix-inset" v-if="resources">
@@ -145,4 +148,4 @@ const isAddMode = ref(false);
       :fields="allFields" :isOpen="isAddMode" @close="isAddMode = false" />
   </f7-page>
 </template>
-<style></style>
+<style></style>../../global/firestore/useCollection../../global/firestore/useDocument

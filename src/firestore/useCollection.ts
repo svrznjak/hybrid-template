@@ -1,19 +1,28 @@
 import { FirebaseFirestore } from '@capacitor-firebase/firestore';
 import { reactive } from 'vue';
+import type { z } from 'zod';
 
-interface IActiveCollection {
-  data: object;
+export interface IActiveCollection<dataType> {
+  data: dataType[];
   callbackId: string | undefined;
 }
 // IActiveCollection as associative array
 interface IActiveCollectionAssociative {
-  [key: string]: IActiveCollection;
+  [key: string]: IActiveCollection<any>;
 }
 
 const activeCollections: IActiveCollectionAssociative = reactive({});
 
-export async function useCollection(path: string) {
-  if (activeCollections[path] === undefined) activeCollections[path] = {} as IActiveCollection;
+interface zodParserType {
+  (data: unknown, params?: Partial<z.ParseParams>);
+}
+
+export async function useCollection<dataType>(
+  path: string,
+  zodParser: zodParserType
+): Promise<IActiveCollection<dataType>> {
+  if (activeCollections[path] === undefined)
+    activeCollections[path] = {} as IActiveCollection<dataType>;
   if (activeCollections[path].callbackId === undefined) {
     activeCollections[path].callbackId = await FirebaseFirestore.addCollectionSnapshotListener(
       {
@@ -30,11 +39,8 @@ export async function useCollection(path: string) {
         if (error) {
           console.error(error);
         } else {
-          activeCollections[path].data = event.snapshots.map((snap: any) => {
-            return {
-              id: snap.id,
-              ...snap.data
-            };
+          activeCollections[path].data = event.snapshots.map((snap: any): dataType => {
+            return zodParser({ ...snap.data, id: snap.id, path: snap.path });
           });
         }
       }

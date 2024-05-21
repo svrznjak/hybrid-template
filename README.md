@@ -27,7 +27,31 @@ The purpose of this template is to serve as a starting point for building qualit
 - Offline support
 - Prebuild pages (login, signup, confirm email, forgot password, profile, settings, home, subscribe )
 
+## Getting started
+
+- Fork/Clone this repository
+- Edit `src/app/config.json` with your Firebase config
+- Install dependencies: `npm install`
+- Create a new Firebase project: https://console.firebase.google.com/
+- Create a new Firestore database
+- Add a new web app to your Firebase project
+- Enter your Firebase config into `src/app/config.json`
+
+### iOS
+
+- add iOS app to Firebase
+- download GoogleService-Info.plist and place it in ios/App/App
+
+### Android
+
+- add Android app to Firebase
+- download google-services.json and place it in Android/app
+
 ## Files and folders you work with
+
+- `src/app` - App logic and UI
+
+## Running the app
 
 - ---- todo
 

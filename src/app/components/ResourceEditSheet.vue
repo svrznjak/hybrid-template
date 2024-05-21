@@ -110,7 +110,7 @@ function getFieldById(id: string | number): any {
 </script>
 <template>
   <f7-sheet :opened="isOpen" backdrop :close-by-backdrop-click="false" :close-by-outside-click="false"
-    style="height: 90%;">
+    style="height: 98%;">
     <f7-page-content>
       <div>
         <f7-block style="display: flex; gap: 10px; justify-content: space-between;">

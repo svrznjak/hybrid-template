@@ -71,9 +71,9 @@ function generateCustomFieldsText(resource: any, resourceType: any) {
 </script>
 <template>
   <f7-sheet top :opened="isOpen" container-el='#page-content-search-resoults' :close-by-backdrop-click="false"
-    :close-by-outside-click="false" style="height: 90%;">
+    :close-by-outside-click="false" style="height: 100%;">
     <f7-page-content>
-      <div style="padding-top:50px">
+      <div style="padding-top:70px">
         <template v-for="resourceType in resourceTypesWithResources" :key="resourceType.id">
           <f7-block-title v-if="resourceType.resources.length > 0">{{ resourceType.name }}</f7-block-title>
           <f7-list media-list dividers strong-ios outline-ios class="fix-inset">

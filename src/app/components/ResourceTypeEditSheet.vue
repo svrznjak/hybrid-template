@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import appState from '@/appState';
-import { watch, type PropType, computed } from 'vue';
+import { watch } from 'vue';
 import messages from '../pages/HomePage.i18n.json';
 import { useI18n } from "vue-i18n";
 import _ from 'lodash';
@@ -10,7 +10,7 @@ const { t } = useI18n({
 import { useField, useForm } from 'vee-validate';
 import FieldListInput from '@/global/components/FieldListInput.vue';
 import { FirebaseFirestore } from '@capacitor-firebase/firestore';
-import { f7, theme } from 'framework7-vue';
+import { f7 } from 'framework7-vue';
 appState.dispatch('setSidePanel', false);
 
 const props = defineProps({
@@ -99,15 +99,16 @@ const saveResource = handleSubmit(async values => {
   const options = _.clone(props.resourceTypeCustomFields);
 
 
-  if (props.editingFieldId === undefined) {
+  if (props.editingFieldId === undefined) { // in case where we are adding new field to resource type
     options.push(newFieldOptions);
-  } else {
+  } else { // in case where we are editing existing field
     Object.keys(options).forEach(key => {
       if (options[key].id == newFieldOptions.id) {
         options[key] = newFieldOptions;
       }
     });
   }
+  console.log(options);
 
 
   try {
@@ -130,7 +131,7 @@ const saveResource = handleSubmit(async values => {
 </script>
 <template>
   <f7-sheet :opened="isOpen" backdrop :close-by-backdrop-click="false" :close-by-outside-click="false"
-    style="height: 80%;">
+    style="height: 98%;">
     <f7-page-content>
       <div>
         <f7-block>
@@ -156,8 +157,8 @@ const saveResource = handleSubmit(async values => {
             <option value="checkbox">{{ t('Izbira večih vrednosti') }}</option>
             <option value="toggle">{{ t('Izbira "Da" ali "Ne"') }}</option>
           </FieldListInput>
-          <FieldListInput v-if="input.value.value === 'select' || input.value.value === 'checkbox'" :name="t('Možnosti')"
-            :label="t('Možnosti polja')" type="text" outline inset
+          <FieldListInput v-if="input.value.value === 'select' || input.value.value === 'checkbox'"
+            :name="t('Možnosti')" :label="t('Možnosti polja')" type="text" outline inset
             :placeholder="t('Možnosti polja vnesena s podpičjem. Npr. električar;mehanik;varilec')" :field="options"
             @input="options.value.value = $event.target.value" />
           <FieldListInput

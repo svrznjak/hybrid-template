@@ -7,10 +7,11 @@ const { t } = useI18n({
 });
 import ResourceTypeEditSheet from '../components/ResourceTypeEditSheet.vue';
 import ResourceTypeEditNameSheet from '../components/ResourceTypeEditNameSheet.vue';
-import { unsubscribeFromDocument, useDocument } from '../store/useDocument';
+import { unsubscribeFromDocument, useDocument } from '@/firestore/useDocument';
 import { f7 } from 'framework7-vue';
 import _ from 'lodash';
 import { FirebaseFirestore } from '@capacitor-firebase/firestore';
+import { resourceTypeSchema, type IResourceType } from '#/types/resourceType';
 
 const props = defineProps({
   companyId: {
@@ -37,7 +38,7 @@ const typeFields = computed(() => {
 
 
 onMounted(async () => {
-  currentResourceType.value = await useDocument('/Companies/' + props.companyId + "/resourceTypes/" + props.resourceTypeId)
+  currentResourceType.value = await useDocument<IResourceType>('/Companies/' + props.companyId + "/resourceTypes/" + props.resourceTypeId, resourceTypeSchema.parse);
 });
 
 onUnmounted(async () => {
@@ -172,11 +173,12 @@ async function saveTypeFields(typeFields: any) {
       <f7-block v-if="currentResourceType" inset outline strong-ios>
         <div style="display: flex; justify-content: space-between; flex-wrap: wrap-reverse;">
           <h1 style="margin-bottom: 0px; ">{{ currentResourceType.data ?
-            currentResourceType.data.name : "" }} <f7-chip
+      currentResourceType.data.name : "" }} <f7-chip
               v-if="currentResourceType.data !== undefined && !currentResourceType.data.isActive">{{ t('Ni aktiven')
               }}</f7-chip>
           </h1>
-          <f7-button @click="isOpenNameEdit = true" style="width:fit-content;"><f7-icon f7="pencil"></f7-icon></f7-button>
+          <f7-button @click="isOpenNameEdit = true" style="width:fit-content;"><f7-icon
+              f7="pencil"></f7-icon></f7-button>
         </div>
         <p style=" margin-bottom: 20px">{{ currentResourceType.data ? currentResourceType.data.description : "" }}</p>
       </f7-block>
@@ -202,4 +204,4 @@ async function saveTypeFields(typeFields: any) {
       @close="() => { editingFieldId = undefined; isEditOpen = false }" />
   </f7-page>
 </template>
-<style></style>
+<style></style>../../global/firestore/useDocument

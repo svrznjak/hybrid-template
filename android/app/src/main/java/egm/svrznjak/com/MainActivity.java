@@ -1,4 +1,4 @@
-package ;
+package egm.svrznjak.com;
 
 import com.getcapacitor.BridgeActivity;
 

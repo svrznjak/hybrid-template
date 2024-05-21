@@ -8,8 +8,10 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n({
   messages
 });
-import { unsubscribeFromDocument, useDocument } from '../store/useDocument';
+import { unsubscribeFromDocument, useDocument } from '@/firestore/useDocument';
 import { FirebaseFirestore } from '@capacitor-firebase/firestore';
+import { resourceTypeSchema, type IResourceType } from '#/types/resourceType';
+import { resourceSchema, type IResource } from '#/types/resource';
 appState.dispatch('setSidePanel', false);
 
 const props = defineProps({
@@ -106,8 +108,8 @@ watch(() => resource?.value?.data, async (newValue) => {
 
 
 onMounted(async () => {
-  currentResourceType.value = await useDocument('/Companies/' + props.companyId + "/resourceTypes/" + props.resourceTypeId)
-  resource.value = await useDocument('/Companies/' + props.companyId + "/resourceTypes/" + props.resourceTypeId + "/resources/" + props.resourceId);
+  currentResourceType.value = await useDocument<IResourceType>('/Companies/' + props.companyId + "/resourceTypes/" + props.resourceTypeId, resourceTypeSchema.parse)
+  resource.value = await useDocument<IResource>('/Companies/' + props.companyId + "/resourceTypes/" + props.resourceTypeId + "/resources/" + props.resourceId, resourceSchema.parse);
 });
 
 onUnmounted(async () => {
@@ -195,8 +197,8 @@ function generateBadgeColor(status: string): string {
           :link="`/Companies/${props.companyId}/projects/${project.id}`" :subtitle="project.customerName"
           :badge="generateBadgeText(project.status)" :badge-color="generateBadgeColor(project.status)">
           <div style="font-size:14px">{{ new Date(project.fromDate).toLocaleDateString() + ' - ' + new
-            Date(project.toDate).toLocaleDateString() +
-            '&nbsp;&nbsp;' }}</div>
+      Date(project.toDate).toLocaleDateString() +
+      '&nbsp;&nbsp;' }}</div>
         </f7-list-item>
       </f7-list>
     </div>
@@ -205,4 +207,4 @@ function generateBadgeColor(status: string): string {
       :fields="allFields" :isOpen="isEditMode" @close="closeEditMode" />
   </f7-page>
 </template>
-<style></style>
+<style></style>../../global/firestore/useDocument

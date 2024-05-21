@@ -8,7 +8,7 @@ const { t } = useI18n({
 import { useField, useForm } from 'vee-validate';
 import FieldListInput from '@/global/components/FieldListInput.vue';
 import { FirebaseFirestore } from '@capacitor-firebase/firestore';
-import { f7, theme } from 'framework7-vue';
+import { f7 } from 'framework7-vue';
 appState.dispatch('setSidePanel', false);
 
 const props = defineProps({
@@ -68,7 +68,7 @@ const saveNameAndDescription = handleSubmit(async values => {
 </script>
 <template>
   <f7-sheet :opened="isOpen" backdrop :close-by-backdrop-click="false" :close-by-outside-click="false"
-    style="height: 90%;">
+    style="height: 98%;">
     <f7-page-content>
       <div>
         <f7-block>

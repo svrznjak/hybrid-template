@@ -6,8 +6,9 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n({
   messages
 });
-import { unsubscribeFromCollection, useCollection } from "../store/useCollection";
-import ResourceTypeAddSheet from '../components/ResourceTypeAddSheet.vue';
+import { unsubscribeFromCollection, useCollection } from "@/firestore/useCollection";
+import ResourceTypeAddSheet from '#/components/ResourceTypeAddSheet.vue';
+import { resourceTypeSchema, type IResourceType } from '#/types/resourceType';
 appState.dispatch('setSidePanel', false);
 
 const props = defineProps({
@@ -22,13 +23,8 @@ console.log(props)
 const resourceTypes = ref();
 
 onMounted(async () => {
-  resourceTypes.value = (await useCollection('/Companies/' + props.companyId + "/resourceTypes"));
+  resourceTypes.value = await useCollection<IResourceType>('/Companies/' + props.companyId + "/resourceTypes", resourceTypeSchema.parse);
 });
-
-onUnmounted(async () => {
-  unsubscribeFromCollection('/Companies/' + props.companyId + "/resourceTypes");
-});
-
 
 const isOpenAddNew = ref(false);
 
@@ -58,4 +54,4 @@ const isOpenAddNew = ref(false);
       @close="isOpenAddNew = false" />
   </f7-page>
 </template>
-<style></style>
+<style></style>../../global/firestore/useCollection

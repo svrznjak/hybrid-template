@@ -1,19 +1,27 @@
 import { FirebaseFirestore } from '@capacitor-firebase/firestore';
 import { reactive } from 'vue';
+import type { z } from 'zod';
 
-interface IActiveDocument {
-  data: object;
+export interface IActiveDocument<dataType> {
+  data: dataType;
   callbackId: string | undefined;
 }
 // IActiveDocument as associative array
-interface IActiveDocumentAssociative {
-  [key: string]: IActiveDocument;
+export interface IActiveDocumentAssociative {
+  [key: string]: IActiveDocument<any>;
 }
 
 const activeDocuments: IActiveDocumentAssociative = reactive({});
 
-export async function useDocument(path: string) {
-  if (activeDocuments[path] === undefined) activeDocuments[path] = {} as IActiveDocument;
+interface zodParserType {
+  (data: unknown, params?: Partial<z.ParseParams>);
+}
+
+export async function useDocument<dataType>(
+  path: string,
+  zodParser: zodParserType
+): Promise<IActiveDocument<dataType>> {
+  if (activeDocuments[path] === undefined) activeDocuments[path] = {} as IActiveDocument<dataType>;
   if (activeDocuments[path].callbackId === undefined) {
     activeDocuments[path].callbackId = await FirebaseFirestore.addDocumentSnapshotListener(
       {
@@ -23,11 +31,9 @@ export async function useDocument(path: string) {
         if (error) {
           console.error(error);
         } else {
-          console.log(event);
-          activeDocuments[path].data = {
-            id: event.snapshot.id,
-            ...event.snapshot.data
-          };
+          const snap = event.snapshot;
+          console.log(snap);
+          activeDocuments[path].data = zodParser({ ...snap.data, id: snap.id, path: snap.path });
         }
       }
     );
